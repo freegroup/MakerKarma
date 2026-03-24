@@ -1,0 +1,40 @@
+@import './variables.less';
+
+.task-card {
+  background: white;
+  border-radius: @radius-xl;
+  box-shadow: @shadow-sm;
+  padding: @spacing-4;
+
+  &:hover {
+    box-shadow: @shadow-md;
+  }
+
+  &-category {
+    border-radius: @radius-lg;
+    font-size: @icon-size-md;
+  }
+
+  &-title {
+    font-size: @font-size-base;
+    font-weight: 600;
+    color: @gray-900;
+  }
+
+  &-desc {
+    font-size: @font-size-sm;
+    color: @gray-500;
+  }
+
+  &-points {
+    color: @color-warning;
+  }
+
+  &-badge {
+    font-size: @font-size-xs;
+    color: @brand-accent;
+    background: fade(@brand-accent, 10%);
+    border-radius: @radius-full;
+    padding: @spacing-1 @spacing-2;
+  }
+}

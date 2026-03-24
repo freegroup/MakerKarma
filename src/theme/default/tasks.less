@@ -1,0 +1,23 @@
+@import './variables.less';
+
+.tasks {
+  &-title {
+    font-size: @font-size-xl;
+    font-weight: 700;
+    color: @gray-900;
+  }
+
+  &-loading { color: @gray-500; }
+  &-error { color: @color-error; }
+  &-empty { color: @gray-400; }
+
+  &-fab {
+    border-radius: @radius-full;
+    background: @brand-primary;
+    color: white;
+    border: none;
+    box-shadow: @shadow-lg;
+
+    &:hover { background: @primary-700; }
+  }
+}

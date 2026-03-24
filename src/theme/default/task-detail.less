@@ -1,0 +1,57 @@
+@import './variables.less';
+
+.detail {
+  &-back { background: none; border: none; color: @gray-500; font-size: @font-size-sm; }
+
+  &-category { border-radius: @radius-xl; font-size: @icon-size-md; }
+  &-category-name { font-size: @font-size-xs; color: @gray-500; font-weight: 600; }
+  &-title { font-size: @font-size-xl; font-weight: 700; color: @gray-900; }
+
+  &-desc {
+    color: @gray-600; font-size: @font-size-base;
+    img { border-radius: @radius-xl; }
+    a { color: @brand-primary; }
+  }
+
+  &-info-item { font-size: @font-size-sm; color: @gray-500; }
+
+  &-fab {
+    border-radius: @radius-full; background: @color-success; color: white;
+    border: none; box-shadow: @shadow-lg;
+    &:hover { background: darken(@color-success, 5%); }
+    &--done { background: @color-success; }
+  }
+
+  &-success { color: @color-success; font-weight: 500; }
+  &-error, &-error-msg { color: @color-error; }
+
+  // Chat
+  &-chat-bubble {
+    background: white; border-radius: @radius-lg; box-shadow: @shadow-sm;
+    font-size: @font-size-sm; padding: @spacing-3;
+    img { border-radius: @radius-md; }
+  }
+
+  &-chat-msg--done &-chat-bubble {
+    background: fade(@color-success, 10%); border-left: 3px solid @color-success;
+  }
+
+  &-chat-time { font-size: @font-size-xs; color: @gray-400; }
+
+  &-chat-input { background: white; border-top: 1px solid @gray-200; padding: @spacing-2 @spacing-3; }
+  &-chat-photo { background: none; border: none; color: @gray-400; &:hover { color: @brand-primary; } }
+
+  &-chat-text {
+    border: 1px solid @gray-200; border-radius: @radius-full;
+    font-size: @font-size-sm; padding: @spacing-2 @spacing-4;
+    &:focus { border-color: @brand-primary; }
+  }
+
+  &-chat-send { background: @brand-primary; color: white; border: none; border-radius: @radius-full; }
+  &-chat-preview button { border-radius: @radius-full; background: @overlay-dark; color: white; border: none; font-size: @font-size-xs; }
+
+  // History
+  &-history h3 { font-size: @font-size-sm; font-weight: 600; color: @gray-500; }
+  &-history-item { border-bottom: 1px solid @gray-100; font-size: @font-size-sm; color: @gray-700; padding: @spacing-2 0; }
+  &-history-date { color: @gray-400; }
+}

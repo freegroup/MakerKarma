@@ -26,7 +26,7 @@ export default function LoginPage() {
     <div className="login">
       <div className="login-card">
         <h1 className="login-title">MakerKarma</h1>
-        <p className="login-subtitle">Vereinsaufgaben erledigen. Punkte sammeln.</p>
+        <p className="login-subtitle">Tue Gutes. Sammle Karma.</p>
 
         {error && (
           <div className="login-error">

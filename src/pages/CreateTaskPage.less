@@ -1,100 +1,62 @@
-@import '../theme/default.less';
+@import '../theme/default/variables.less';
 
 .create {
-  padding: @spacing-4;
   max-width: 480px;
   margin: 0 auto;
+  padding: @spacing-6 @spacing-5;
+  padding-bottom: @spacing-12;
 
   &-back {
     display: flex;
     align-items: center;
-    gap: @spacing-2;
-    background: none;
-    border: none;
-    color: @gray-500;
-    font-size: @font-size-sm;
+    gap: @spacing-1;
     cursor: pointer;
-    padding: 0;
     margin-bottom: @spacing-4;
   }
 
   &-title {
-    font-size: @font-size-xl;
-    font-weight: 700;
-    color: @gray-900;
-    margin-bottom: @spacing-6;
+    margin-bottom: @spacing-8;
   }
 
   &-form {
     display: flex;
     flex-direction: column;
-    gap: @spacing-5;
+    gap: @spacing-8;
   }
 
   &-input {
     width: 100%;
-    padding: @spacing-3 @spacing-4;
-    border: 1px solid @gray-200;
-    border-radius: @radius-xl;
-    font-size: @font-size-lg;
     font-family: @font-stack;
-    font-weight: 600;
     outline: none;
-    background: white;
-
-    &:focus {
-      border-color: @brand-primary;
-      box-shadow: 0 0 0 3px fade(@brand-primary, 10%);
-    }
   }
 
   &-textarea {
     width: 100%;
-    padding: @spacing-3 @spacing-4;
-    border: 1px solid @gray-200;
-    border-radius: @radius-xl;
-    font-size: @font-size-base;
+    min-height: 100px;
     font-family: @font-stack;
     resize: vertical;
     outline: none;
-    background: white;
-
-    &:focus {
-      border-color: @brand-primary;
-      box-shadow: 0 0 0 3px fade(@brand-primary, 10%);
-    }
   }
 
   &-field {
+    display: flex;
+    flex-direction: column;
+    gap: @spacing-3;
+
     label {
       display: block;
-      font-size: @font-size-sm;
-      font-weight: 600;
-      color: @gray-700;
-      margin-bottom: @spacing-2;
     }
   }
 
   &-categories {
     display: flex;
     flex-wrap: wrap;
-    gap: @spacing-2;
+    gap: @spacing-3;
   }
 
   &-cat {
-    padding: @spacing-2 @spacing-4;
-    border: 2px solid @gray-200;
-    border-radius: @radius-full;
-    background: white;
-    font-size: @font-size-sm;
     cursor: pointer;
     transition: all 0.15s;
-
-    &.active {
-      border-color: var(--cat-color);
-      background: var(--cat-color);
-      color: white;
-    }
   }
 
   &-points {
@@ -103,21 +65,10 @@
   }
 
   &-point {
-    width: 48px;
-    height: 48px;
-    border-radius: @radius-full;
-    border: 2px solid @gray-200;
-    background: white;
-    font-size: @font-size-lg;
-    font-weight: 700;
+    width: 52px;
+    height: 52px;
     cursor: pointer;
     transition: all 0.15s;
-
-    &.active {
-      border-color: @color-warning;
-      background: @color-warning;
-      color: white;
-    }
   }
 
   &-photo-btn {
@@ -126,41 +77,26 @@
     justify-content: center;
     gap: @spacing-2;
     width: 100%;
-    padding: @spacing-4;
-    border: 2px dashed @gray-200;
-    border-radius: @radius-xl;
-    background: white;
-    color: @gray-500;
-    font-size: @font-size-sm;
     cursor: pointer;
-
-    &:hover {
-      border-color: @gray-300;
-    }
+    min-height: 80px;
   }
 
   &-photo-preview {
     position: relative;
-    border-radius: @radius-xl;
     overflow: hidden;
 
     img {
       width: 100%;
       display: block;
-      border-radius: @radius-xl;
     }
   }
 
   &-photo-remove {
     position: absolute;
-    top: @spacing-2;
-    right: @spacing-2;
-    width: 28px;
-    height: 28px;
-    border-radius: @radius-full;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
+    top: @spacing-3;
+    right: @spacing-3;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,21 +104,15 @@
   }
 
   &-submit {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    padding: @spacing-4;
-    background: @brand-primary;
-    color: white;
-    border: none;
-    border-radius: @radius-full;
-    font-size: @font-size-lg;
-    font-weight: 600;
+    min-height: 56px;
     cursor: pointer;
     transition: background 0.15s;
-    margin-top: @spacing-2;
-
-    &:hover {
-      background: @primary-700;
-    }
+    z-index: 10;
 
     &:disabled {
       opacity: 0.5;
@@ -190,9 +120,33 @@
     }
   }
 
+  &-success {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  &-success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 300px;
+  }
+
+  &-success-emoji {
+    display: block;
+  }
+
+  &-success-btn {
+    cursor: pointer;
+  }
+
   &-error {
     text-align: center;
-    color: @color-error;
-    font-size: @font-size-sm;
   }
 }

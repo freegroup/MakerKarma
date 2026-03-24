@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
-import './AdminPage.less'
+import './KarmaBoardPage.less'
 
 async function fetchPoints() {
   const res = await apiFetch('/api/admin/points')
@@ -27,7 +27,7 @@ function shiftMonth(month, delta) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
 }
 
-export default function AdminPage() {
+export default function KarmaBoardPage() {
   const [month, setMonth] = useState(getCurrentMonth)
 
   const { data: allPoints = [], isLoading } = useQuery({
@@ -44,7 +44,7 @@ export default function AdminPage() {
 
   return (
     <div className="admin">
-      <h2 className="admin-title">Punkte-Übersicht</h2>
+      <h2 className="admin-title">Karma Board</h2>
 
       <div className="admin-month-nav">
         <button onClick={() => setMonth(m => shiftMonth(m, -1))}><ChevronLeft size={20} /></button>
@@ -55,11 +55,11 @@ export default function AdminPage() {
       <div className="admin-summary">
         <div className="admin-summary-item">
           <span className="admin-summary-value">{totalPoints}</span>
-          <span className="admin-summary-label">Punkte</span>
+          <span className="admin-summary-label">Karma</span>
         </div>
         <div className="admin-summary-item">
           <span className="admin-summary-value">{totalTasks}</span>
-          <span className="admin-summary-label">Aufgaben</span>
+          <span className="admin-summary-label">Gute Taten</span>
         </div>
         <div className="admin-summary-item">
           <span className="admin-summary-value">{monthPoints.length}</span>
@@ -70,7 +70,7 @@ export default function AdminPage() {
       {isLoading ? (
         <div className="admin-loading"><div className="spinner" /></div>
       ) : monthPoints.length === 0 ? (
-        <p className="admin-empty">Keine Punkte in {formatMonth(month)}.</p>
+        <p className="admin-empty">Noch kein Karma in {formatMonth(month)}.</p>
       ) : (
         <div className="admin-list">
           {monthPoints.map((entry, i) => (
@@ -78,7 +78,7 @@ export default function AdminPage() {
               <span className="admin-row-rank">#{i + 1}</span>
               <div className="admin-row-user">
                 <span className="admin-row-name">{entry.userName}</span>
-                <span className="admin-row-tasks">{entry.tasks} Aufgaben</span>
+                <span className="admin-row-tasks">{entry.tasks} Gute Taten</span>
               </div>
               <span className="admin-row-points">
                 <Star size={14} /> {entry.points}

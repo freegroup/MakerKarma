@@ -1,27 +1,16 @@
-@import '../theme/default.less';
+@import '../theme/default/variables.less';
 
 .task-card {
   display: flex;
-  gap: @spacing-3;
-  background: white;
-  border-radius: @radius-xl;
-  padding: @spacing-4;
-  box-shadow: @shadow-sm;
   cursor: pointer;
   transition: box-shadow 0.15s;
-
-  &:hover {
-    box-shadow: @shadow-md;
-  }
 
   &-category {
     width: 40px;
     height: 40px;
-    border-radius: @radius-lg;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
     flex-shrink: 0;
   }
 
@@ -30,26 +19,15 @@
     min-width: 0;
   }
 
-  &-title {
-    font-size: @font-size-base;
-    font-weight: 600;
-    color: @gray-900;
-    margin-bottom: @spacing-1;
-  }
-
   &-desc {
-    font-size: @font-size-sm;
-    color: @gray-500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: @spacing-2;
   }
 
   &-meta {
     display: flex;
     align-items: center;
-    gap: @spacing-2;
     flex-wrap: wrap;
   }
 
@@ -57,14 +35,5 @@
     display: flex;
     align-items: center;
     gap: 2px;
-    color: @color-warning;
-  }
-
-  &-badge {
-    font-size: @font-size-xs;
-    color: @brand-accent;
-    background: fade(@brand-accent, 10%);
-    padding: 2px @spacing-2;
-    border-radius: @radius-full;
   }
 }

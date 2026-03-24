@@ -133,7 +133,7 @@ export default function TaskDetailPage() {
   }
 
   if (!task) {
-    return <div className="detail-error">Aufgabe nicht gefunden.</div>
+    return <div className="detail-error">Nicht gefunden.</div>
   }
 
   const category = categories.find(c => c.key === task?.category) || { icon: '📋', name: task?.category || '', color: '#6B7280' }

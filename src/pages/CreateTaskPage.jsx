@@ -4,6 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import { CATEGORIES } from '../types'
 import { ArrowLeft, Camera, X } from 'lucide-react'
+import confetti from 'canvas-confetti'
+import greetings from '../greetings-post.json'
 import './CreateTaskPage.less'
 
 async function fetchCategories() {
@@ -69,12 +71,16 @@ export default function CreateTaskPage() {
   const [category, setCategory] = useState('')
   const [points, setPoints] = useState(1)
   const [photo, setPhoto] = useState(null)
+  const [successMsg, setSuccessMsg] = useState(null)
 
   const mutation = useMutation({
     mutationFn: createTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      navigate('/', { replace: true })
+      // Confetti + random greeting
+      const msg = greetings[Math.floor(Math.random() * greetings.length)]
+      setSuccessMsg(msg)
+      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } })
     },
   })
 
@@ -100,17 +106,27 @@ export default function CreateTaskPage() {
 
   return (
     <div className="create">
+      {successMsg && (
+        <div className="create-success" onClick={() => navigate('/', { replace: true })}>
+          <div className="create-success-card">
+            <span className="create-success-emoji">🎉</span>
+            <p className="create-success-msg">{successMsg}</p>
+            <button className="create-success-btn">Weiter</button>
+          </div>
+        </div>
+      )}
+
       <button className="create-back" onClick={() => navigate(-1)}>
         <ArrowLeft size={20} /> Zurück
       </button>
 
-      <h2 className="create-title">Neue Aufgabe</h2>
+      <h2 className="create-title">Wunsch an die Community</h2>
 
       <form className="create-form" onSubmit={handleSubmit}>
         <input
           className="create-input"
           type="text"
-          placeholder="Titel der Aufgabe"
+          placeholder="Was wünschst du dir?"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           autoFocus
@@ -118,7 +134,7 @@ export default function CreateTaskPage() {
 
         <textarea
           className="create-textarea"
-          placeholder="Beschreibung (optional)"
+          placeholder="Beschreibe diesen genauer..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={3}
@@ -142,7 +158,7 @@ export default function CreateTaskPage() {
         </div>
 
         <div className="create-field">
-          <label>Punkte</label>
+          <label>Wie wertvoll ist das für die Community?</label>
           <div className="create-points">
             {pointsOptions.map((p) => (
               <button
@@ -186,7 +202,7 @@ export default function CreateTaskPage() {
           type="submit"
           disabled={!title.trim() || mutation.isPending}
         >
-          {mutation.isPending ? 'Wird erstellt...' : 'Aufgabe erstellen'}
+          {mutation.isPending ? 'Wird gepostet...' : 'An Community senden'}
         </button>
 
         {mutation.isError && (

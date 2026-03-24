@@ -1,0 +1,69 @@
+@import './variables.less';
+
+.login {
+  background: linear-gradient(135deg, @primary-600, @brand-accent);
+
+  &-card {
+    background: white;
+    border-radius: @radius-2xl;
+    box-shadow: @shadow-lg;
+    padding: @spacing-8;
+  }
+
+  &-title {
+    font-size: @font-size-3xl;
+    font-weight: 800;
+    color: @gray-900;
+  }
+
+  &-subtitle {
+    color: @gray-500;
+    font-size: @font-size-sm;
+  }
+
+  &-error {
+    background: fade(@color-error, 8%);
+    border: 1px solid fade(@color-error, 20%);
+    border-radius: @radius-lg;
+    padding: @spacing-3;
+  }
+
+  &-error-msg {
+    color: @color-error;
+    font-size: @font-size-sm;
+    font-weight: 600;
+  }
+
+  &-error-detail {
+    color: @gray-600;
+    font-size: @font-size-xs;
+  }
+
+  &-btn {
+    border: 1px solid @gray-200;
+    border-radius: @radius-lg;
+    font-size: @font-size-base;
+    font-weight: 500;
+    padding: @spacing-3 @spacing-4;
+
+    &--github {
+      background: @gray-900;
+      color: white;
+      border-color: @gray-900;
+
+      &:hover { background: @gray-800; }
+    }
+
+    &--google {
+      background: white;
+      color: @gray-700;
+
+      &:hover { background: @gray-50; box-shadow: @shadow-sm; }
+    }
+  }
+
+  &-hint {
+    font-size: @font-size-xs;
+    color: @gray-400;
+  }
+}

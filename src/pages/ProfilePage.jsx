@@ -31,7 +31,7 @@ export default function ProfilePage() {
         <div className="profile-points">
           <Star size={24} />
           <span className="profile-points-value">{profile?.points ?? 0}</span>
-          <span className="profile-points-label">Punkte</span>
+          <span className="profile-points-label">Karma</span>
         </div>
       </div>
 

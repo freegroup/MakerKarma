@@ -1,11 +1,8 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { ClipboardList, User, Shield } from 'lucide-react'
-import { useAuthStore } from '../store/authStore'
+import { Compass, User, Trophy } from 'lucide-react'
 import './Layout.less'
 
 export default function Layout() {
-  const { user } = useAuthStore()
-
   return (
     <div className="layout">
       <header className="topbar">
@@ -18,18 +15,16 @@ export default function Layout() {
 
       <nav className="bottomnav">
         <NavLink to="/" end className="bottomnav-item">
-          <ClipboardList size={22} />
-          <span>Aufgaben</span>
+          <Compass size={22} />
+          <span>Entdecken</span>
         </NavLink>
-        {user?.isAdmin && (
-          <NavLink to="/admin" className="bottomnav-item">
-            <Shield size={22} />
-            <span>Admin</span>
-          </NavLink>
-        )}
+        <NavLink to="/board" className="bottomnav-item">
+          <Trophy size={22} />
+          <span>Board</span>
+        </NavLink>
         <NavLink to="/profile" className="bottomnav-item">
           <User size={22} />
-          <span>Profil</span>
+          <span>Mein Karma</span>
         </NavLink>
       </nav>
     </div>

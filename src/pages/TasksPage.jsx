@@ -23,20 +23,20 @@ export default function TasksPage() {
     return (
       <div className="tasks-loading">
         <div className="spinner" />
-        <p>Aufgaben werden geladen...</p>
+        <p>Karma wird geladen...</p>
       </div>
     )
   }
 
   if (error) {
-    return <div className="tasks-error">Fehler beim Laden der Aufgaben.</div>
+    return <div className="tasks-error">Fehler beim Laden.</div>
   }
 
   return (
     <div className="tasks">
-      <h2 className="tasks-title">Offene Aufgaben</h2>
+      <h2 className="tasks-title">Karma sammeln</h2>
       {tasks.length === 0 ? (
-        <p className="tasks-empty">Keine offenen Aufgaben vorhanden.</p>
+        <p className="tasks-empty">Gerade keine Karma-Chancen. Komm später wieder!</p>
       ) : (
         <div className="tasks-list">
           {tasks.map((task) => (

@@ -1,0 +1,17 @@
+@import './variables.less';
+
+.profile {
+  &-card { background: white; border-radius: @radius-2xl; box-shadow: @shadow-sm; padding: @spacing-6; }
+  &-avatar { border-radius: @radius-full; }
+  &-name { font-size: @font-size-xl; font-weight: 700; color: @gray-900; }
+  &-email { font-size: @font-size-sm; color: @gray-500; }
+  &-points { color: @color-warning; }
+  &-points-value { font-size: @font-size-3xl; font-weight: 800; }
+  &-points-label { font-size: @font-size-sm; color: @gray-500; }
+
+  &-logout {
+    background: white; border: 1px solid @gray-200; border-radius: @radius-xl;
+    color: @color-error; font-size: @font-size-base; padding: @spacing-3 @spacing-6;
+    &:hover { background: @gray-50; }
+  }
+}

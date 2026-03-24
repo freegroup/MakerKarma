@@ -1,0 +1,38 @@
+@import './variables.less';
+
+// Global + Layout + Shared Components
+body {
+  background-color: @gray-50;
+  color: @gray-900;
+  font-family: @font-stack;
+}
+
+.topbar {
+  background: @brand-primary;
+  color: white;
+
+  &-title {
+    font-size: @font-size-lg;
+    font-weight: 700;
+  }
+}
+
+.bottomnav {
+  background: white;
+  border-top: 1px solid @gray-200;
+
+  &-item {
+    color: @gray-400;
+    font-size: @font-size-xs;
+
+    &.active {
+      color: @brand-primary;
+    }
+  }
+}
+
+.spinner {
+  border: 3px solid @gray-200;
+  border-top-color: @brand-primary;
+  border-radius: 50%;
+}

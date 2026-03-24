@@ -6,7 +6,7 @@ import LoginPage from './pages/LoginPage'
 import TasksPage from './pages/TasksPage'
 import TaskDetailPage from './pages/TaskDetailPage'
 import ProfilePage from './pages/ProfilePage'
-import AdminPage from './pages/AdminPage'
+import KarmaBoardPage from './pages/KarmaBoardPage'
 import CreateTaskPage from './pages/CreateTaskPage'
 
 function ProtectedRoute({ children }) {
@@ -41,7 +41,7 @@ export default function App() {
       >
         <Route index element={<TasksPage />} />
         <Route path="profile" element={<ProfilePage />} />
-        <Route path="admin" element={<AdminPage />} />
+        <Route path="board" element={<KarmaBoardPage />} />
       </Route>
       <Route
         path="/"
