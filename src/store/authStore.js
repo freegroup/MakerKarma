@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 // API base URL: Worker in dev, same-origin or configured URL in prod
-const API_BASE = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8787' : '')
+const API_BASE = import.meta.env.VITE_API_URL || 'https://makerkarma-api.a-herz.workers.dev'
 
 export const useAuthStore = create(
   persist(
