@@ -12,6 +12,43 @@ Eine WebApp für Vereinsmitglieder, um Aufgaben zu erledigen und "Sozialstunden/
 - **Minimalistisch**: Wenig Text, große Touch-Targets, klare visuelle Hierarchie
 - **Dynamische Konfiguration**: Kategorien und Punkte-Werte kommen aus GitHub Labels — kein Hardcoding, Admin verwaltet alles über GitHub
 
+## Theming-Architektur
+Striktes Theming mit klarer Trennung:
+
+- **Komponenten-Less** (`src/pages/*.less`, `src/components/*.less`): Nur Layout und Verhalten (display, flex, position, width, height). Keine Farben, keine Abstände.
+- **Theme-Less** (`src/theme/default.less`): Definiert ALLE visuellen Eigenschaften:
+  1. **Variablen-Block** (oben): Less-Variablen für Farben, Abstände, Radii, Shadows, Fonts
+  2. **Klassen-Block** (unten): Mapping der Variablen auf konkrete Komponenten-Klassen
+
+### Beispiel Theme-Aufbau:
+```less
+// === VARIABLEN ===
+@brand-primary: #3b82f6;
+@spacing-4: 1rem;
+@radius-xl: 0.75rem;
+
+// === KLASSEN-MAPPING ===
+.task-card {
+  background: white;
+  border-radius: @radius-xl;
+  padding: @spacing-4;
+  box-shadow: @shadow-sm;
+}
+
+.create-submit {
+  background: @brand-primary;
+  color: white;
+  border-radius: @radius-full;
+  padding: @spacing-4;
+}
+```
+
+### Regeln:
+- Ein neues Theme = Eine neue Less-Datei die alles überschreibt
+- Farben, Abstände, Border-Radii, Schatten, Font-Sizes IMMER über Theme-Variablen
+- Komponenten-Less: KEIN `color:`, `background:`, `padding:`, `margin:`, `border-radius:`, `box-shadow:`, `font-size:`
+- Ausnahme: Layout-relevante Abstände (gap in Flexbox) dürfen in Komponenten bleiben
+
 ## Tech Stack
 - **Frontend**: Vite + React (Plain JavaScript) → gehostet auf GitHub Pages
 - **Styling**: Less (Variablen-basiertes Theming in `src/theme/`)
