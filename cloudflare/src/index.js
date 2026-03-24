@@ -108,6 +108,35 @@ api.get('/tasks/:id/comments', getTaskComments)
 api.post('/tasks/:id/comment', addTaskComment)
 api.get('/tasks/:id/history', getTaskHistory)
 
+// Update task category
+api.put('/tasks/:id/category', async (c) => {
+  const id = parseInt(c.req.param('id'))
+  const { category } = await c.req.json()
+  const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })
+  const [owner, repo] = c.env.GITHUB_REPOSITORY.split('/')
+
+  // Get current labels
+  const { data: issue } = await octokit.issues.get({ owner, repo, issue_number: id })
+  const currentLabels = issue.labels.map(l => l.name || l)
+
+  // Remove old category labels, add new one
+  const newLabels = currentLabels.filter(l => !l.startsWith('category-'))
+  if (category) newLabels.push(`category-${category}`)
+
+  await octokit.issues.setLabels({ owner, repo, issue_number: id, labels: newLabels })
+
+  // Document category change as comment
+  const user = c.get('user')
+  const oldCat = currentLabels.find(l => l.startsWith('category-'))?.replace('category-', '') || '—'
+  const now = new Date().toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' })
+  await octokit.issues.createComment({
+    owner, repo, issue_number: id,
+    body: `Kategorie geändert: **${oldCat}** → **${category}**\nvon **${user.name}** am ${now}`,
+  })
+
+  return c.json({ success: true, category })
+})
+
 // Labels: fetch points-* labels from repo
 api.get('/labels/points', async (c) => {
   const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })

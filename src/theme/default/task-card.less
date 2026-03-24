@@ -2,17 +2,26 @@
 
 .task-card {
   background: white;
-  border-radius: @radius-xl;
+  border-radius: @radius-2xl;
   box-shadow: @shadow-sm;
   padding: @spacing-4;
+  gap: @spacing-4;
 
   &:hover {
     box-shadow: @shadow-md;
   }
 
-  &-category {
-    border-radius: @radius-lg;
-    font-size: @icon-size-md;
+  &-dot {
+    border-radius: @radius-full;
+    background: linear-gradient(135deg, var(--cat-color), fade(black, 15%));
+    box-shadow: 0 2px 8px fade(black, 15%);
+
+    span {
+      color: white;
+      font-size: @font-size-lg;
+      font-weight: 800;
+      text-shadow: 0 1px 2px fade(black, 20%);
+    }
   }
 
   &-title {
@@ -24,6 +33,12 @@
   &-desc {
     font-size: @font-size-sm;
     color: @gray-500;
+    margin-top: @spacing-1;
+  }
+
+  &-meta {
+    margin-top: @spacing-2;
+    gap: @spacing-3;
   }
 
   &-points {
@@ -32,6 +47,7 @@
 
   &-badge {
     font-size: @font-size-xs;
+    font-weight: 600;
     color: @brand-accent;
     background: fade(@brand-accent, 10%);
     border-radius: @radius-full;

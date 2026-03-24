@@ -6,7 +6,7 @@ import './Layout.less'
 export default function Layout() {
   return (
     <div className="layout">
-      <AppHeader title="MakerKarma" />
+      <AppHeader title="Maker Karma Yoga" />
 
       <main className="content">
         <Outlet />

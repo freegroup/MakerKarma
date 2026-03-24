@@ -18,11 +18,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: @spacing-4;
   }
 
-  &-category {
-    width: 48px;
-    height: 48px;
+  &-dot {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,6 +37,19 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+  }
+
+  &-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: @spacing-2;
+  }
+
+  &-cat {
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
   }
 
   &-desc {

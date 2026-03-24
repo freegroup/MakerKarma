@@ -22,8 +22,11 @@ export default function TaskCard({ task }) {
 
   return (
     <div className="task-card" onClick={() => navigate(`/tasks/${task.id}`)}>
-      <div className="task-card-category" style={{ backgroundColor: category.color }}>
-        {category.icon}
+      <div
+        className="task-card-dot"
+        style={{ '--cat-color': category.color }}
+      >
+        <span>{category.name.charAt(0).toUpperCase()}</span>
       </div>
       <div className="task-card-body">
         <h3 className="task-card-title">{task.title}</h3>

@@ -7,6 +7,7 @@ import { ArrowLeft, Camera, X } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import greetings from '../greetings-post.json'
 import AppHeader from '../components/AppHeader'
+import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
 import './CreateTaskPage.less'
 
@@ -108,12 +109,13 @@ export default function CreateTaskPage() {
   }
 
   return (
-    <div className="create">
+    <PageLayout showBack>
       {successMsg && (
         <Toast message={`🎉 ${successMsg}`} onDone={() => navigate('/', { replace: true })} />
       )}
 
-      <AppHeader title="Wunsch an die Community" showBack />
+      <div className="create">
+      <h2 className="create-title">Wunsch an die Community</h2>
 
       <form className="create-form" onSubmit={handleSubmit}>
         <input
@@ -213,5 +215,6 @@ export default function CreateTaskPage() {
         )}
       </form>
     </div>
+    </PageLayout>
   )
 }

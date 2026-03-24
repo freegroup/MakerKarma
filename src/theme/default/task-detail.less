@@ -3,9 +3,32 @@
 .detail {
   &-back { background: none; border: none; color: @gray-500; font-size: @font-size-sm; }
 
-  &-category { border-radius: @radius-xl; font-size: @icon-size-md; }
+  &-dot {
+    border-radius: @radius-full;
+    background: linear-gradient(135deg, var(--cat-color), fade(black, 15%));
+    box-shadow: 0 3px 12px fade(black, 20%);
+
+    span {
+      color: white;
+      font-size: @font-size-xl;
+      font-weight: 800;
+      text-shadow: 0 1px 2px fade(black, 20%);
+    }
+  }
+
   &-category-name { font-size: @font-size-xs; color: @gray-500; font-weight: 600; }
   &-title { font-size: @font-size-xl; font-weight: 700; color: @gray-900; }
+
+  &-cat {
+    border: 2px solid @gray-200; border-radius: @radius-full; background: white;
+    font-size: @font-size-xs; font-weight: 500; color: @gray-500;
+    padding: @spacing-1 @spacing-3; border: none;
+
+    &.active {
+      background: var(--cat-color); color: white;
+      box-shadow: 0 2px 8px fade(black, 15%);
+    }
+  }
 
   &-desc {
     color: @gray-600; font-size: @font-size-base;

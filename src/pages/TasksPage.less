@@ -1,9 +1,30 @@
 @import '../theme/default/variables.less';
 
 .tasks {
+  &-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: @spacing-2;
+    margin-bottom: @spacing-4;
+  }
+
+  &-filter {
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &-filter-clear {
+    display: flex;
+    align-items: center;
+    gap: @spacing-1;
+    cursor: pointer;
+  }
+
   &-list {
     display: flex;
     flex-direction: column;
+    gap: @spacing-4;
   }
 
   &-loading {

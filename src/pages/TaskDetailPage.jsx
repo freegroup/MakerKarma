@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import Markdown from 'react-markdown'
 import AppHeader from '../components/AppHeader'
+import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
 import confetti from 'canvas-confetti'
 import QRCode from 'qrcode'
@@ -123,6 +124,22 @@ export default function TaskDetailPage() {
     queryFn: () => fetchComments(id),
   })
 
+  const { mutate: updateCategory } = useMutation({
+    mutationFn: async (data) => {
+      const res = await apiFetch(`/api/tasks/${id}/category`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      })
+      if (!res?.ok) throw new Error('Fehler')
+      return res.json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task', id] })
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
+    },
+  })
+
   const completeMutation = useMutation({
     mutationFn: () => completeTask(id),
     onSuccess: () => {
@@ -179,7 +196,10 @@ export default function TaskDetailPage() {
   const category = categories.find(c => c.key === task?.category) || { icon: '📋', name: task?.category || '', color: '#6B7280' }
 
   return (
-    <div className="detail">
+    <PageLayout showBack right={
+      <button onClick={() => setShareOpen(true)}><Share2 size={22} /></button>
+    }>
+      <div className="detail">
       {successMsg && (
         <Toast message={successMsg} onDone={() => setSuccessMsg(null)} />
       )}
@@ -215,18 +235,30 @@ export default function TaskDetailPage() {
         </div>
       )}
 
-      <AppHeader title="MakerKarma" showBack right={
-        <button onClick={() => setShareOpen(true)}><Share2 size={22} /></button>
-      } />
-
       <div className="detail-header">
-        <div className="detail-category" style={{ backgroundColor: category.color }}>
-          {category.icon}
+        <div className="detail-dot" style={{ '--cat-color': category.color }}>
+          <span>{category.name.charAt(0).toUpperCase()}</span>
         </div>
         <div>
           <span className="detail-category-name">{category.name}</span>
           <h1 className="detail-title">{task.title}</h1>
         </div>
+      </div>
+
+      <div className="detail-categories">
+        {categories.map((cat) => (
+          <button
+            key={cat.key}
+            className={`detail-cat ${task.category === cat.key ? 'active' : ''}`}
+            style={{ '--cat-color': cat.color }}
+            onClick={() => {
+              if (task.category === cat.key) return
+              updateCategory({ category: cat.key })
+            }}
+          >
+            {cat.name}
+          </button>
+        ))}
       </div>
 
       {task.description && (
@@ -316,5 +348,6 @@ export default function TaskDetailPage() {
         </button>
       )}
     </div>
+    </PageLayout>
   )
 }

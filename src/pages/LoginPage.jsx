@@ -25,7 +25,7 @@ export default function LoginPage() {
   return (
     <div className="login">
       <div className="login-card">
-        <h1 className="login-title">MakerKarma</h1>
+        <h1 className="login-title">Maker Karma Yoga</h1>
         <p className="login-subtitle">Tue Gutes. Sammle Karma.</p>
 
         {error && (
