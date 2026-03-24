@@ -1,0 +1,80 @@
+@import '../theme/default.less';
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, @primary-600, @brand-accent);
+  padding: @spacing-4;
+
+  &-card {
+    background: white;
+    border-radius: @radius-2xl;
+    padding: @spacing-8;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: @shadow-lg;
+  }
+
+  &-title {
+    font-size: @font-size-3xl;
+    font-weight: 800;
+    color: @gray-900;
+    margin-bottom: @spacing-2;
+  }
+
+  &-subtitle {
+    color: @gray-500;
+    font-size: @font-size-sm;
+    margin-bottom: @spacing-8;
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: @spacing-3;
+  }
+
+  &-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: @spacing-3;
+    width: 100%;
+    padding: @spacing-3 @spacing-4;
+    border: 1px solid @gray-200;
+    border-radius: @radius-lg;
+    font-size: @font-size-base;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s;
+
+    &--google {
+      background: white;
+      color: @gray-700;
+
+      &:hover {
+        background: @gray-50;
+        box-shadow: @shadow-sm;
+      }
+    }
+
+    &--github {
+      background: @gray-900;
+      color: white;
+      border-color: @gray-900;
+
+      &:hover {
+        background: @gray-800;
+      }
+    }
+  }
+
+  &-hint {
+    margin-top: @spacing-6;
+    font-size: @font-size-xs;
+    color: @gray-400;
+  }
+}

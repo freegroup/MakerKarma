@@ -1,0 +1,24 @@
+[
+  {
+    "id": null,
+    "email": "admin@example.com",
+    "name": "Max Mustermann",
+    "avatarUrl": null,
+    "provider": null,
+    "role": "admin",
+    "points": 0,
+    "createdAt": "2026-03-24T00:00:00.000Z",
+    "lastLogin": null
+  },
+  {
+    "id": null,
+    "email": "mitglied@example.com",
+    "name": "Erika Musterfrau",
+    "avatarUrl": null,
+    "provider": null,
+    "role": "member",
+    "points": 0,
+    "createdAt": "2026-03-24T00:00:00.000Z",
+    "lastLogin": null
+  }
+]

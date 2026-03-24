@@ -1,0 +1,223 @@
+# MakerKarma - Konfiguration
+# Kopiere diese Datei nach config.yaml und passe die Werte an
+
+# =============================================================================
+# GITHUB BACKEND
+# =============================================================================
+github:
+  # Repository für die Aufgaben (Issues)
+  repository: "dein-makerspace/tasks"
+  
+  # GitHub Personal Access Token (mit repo Scope)
+  # Erstellen unter: https://github.com/settings/tokens
+  # ACHTUNG: Nicht committen! In Umgebungsvariable speichern
+  # token: ${GITHUB_TOKEN}
+  
+  # Labels die automatisch erstellt werden
+  labels:
+    points_prefix: "punkte"      # z.B. "punkte:5"
+    category_prefix: "kategorie" # z.B. "kategorie:wartung"
+    recurring_prefix: "recurring" # z.B. "recurring:weekly"
+    qrcode_prefix: "qr"          # z.B. "qr:muell-001"
+    status_prefix: "status"      # z.B. "status:offen"
+
+# =============================================================================
+# VEREIN / ORGANISATION
+# =============================================================================
+organization:
+  name: "MakerSpace Beispielstadt"
+  short_name: "MakerSpace"
+  logo_url: "/logo.png"
+  
+  # Kontaktdaten (optional, für Footer etc.)
+  contact:
+    email: "info@makerspace-beispiel.de"
+    website: "https://makerspace-beispiel.de"
+
+# =============================================================================
+# PUNKTESYSTEM
+# =============================================================================
+points:
+  # Abrechnungszeitraum
+  period: "monthly"  # monthly, quarterly, yearly
+  
+  # Punkte können übertragen werden
+  carry_over: true
+  
+  # Maximale Übertragung (0 = unbegrenzt)
+  max_carry_over: 0
+  
+  # Tarifstufen basierend auf Punkten
+  # Mitglieder mit genug Punkten bekommen günstigeren Tarif
+  tiers:
+    - name: "Standard"
+      min_points: 0
+      monthly_fee: 45.00
+      description: "Regulärer Mitgliedsbeitrag"
+    
+    - name: "Aktiv"
+      min_points: 10
+      monthly_fee: 30.00
+      description: "Reduzierter Beitrag für aktive Mitglieder"
+    
+    - name: "Sehr Aktiv"
+      min_points: 25
+      monthly_fee: 15.00
+      description: "Stark reduzierter Beitrag"
+  
+  # Alternative: Punkte in Arbeitszeitkonto umrechnen
+  work_time_conversion:
+    enabled: false
+    points_per_hour: 2  # 2 Punkte = 1 Stunde Arbeitszeit
+
+# =============================================================================
+# KATEGORIEN
+# =============================================================================
+categories:
+  - id: "wartung"
+    name: "Wartung"
+    icon: "🔧"
+    color: "#F59E0B"  # Orange
+    
+  - id: "reinigung"
+    name: "Reinigung"
+    icon: "🧹"
+    color: "#3B82F6"  # Blau
+    
+  - id: "werkstatt"
+    name: "Werkstatt"
+    icon: "🛠️"
+    color: "#8B5CF6"  # Lila
+    
+  - id: "garten"
+    name: "Garten/Außen"
+    icon: "🌱"
+    color: "#10B981"  # Grün
+    
+  - id: "event"
+    name: "Events"
+    icon: "🎉"
+    color: "#EC4899"  # Pink
+    
+  - id: "einkauf"
+    name: "Einkauf"
+    icon: "🛒"
+    color: "#EAB308"  # Gelb
+    
+  - id: "sonstiges"
+    name: "Sonstiges"
+    icon: "📋"
+    color: "#6B7280"  # Grau
+
+# =============================================================================
+# AUTHENTIFIZIERUNG
+# =============================================================================
+auth:
+  # Erlaubte OAuth Provider
+  providers:
+    google:
+      enabled: true
+      # client_id: ${GOOGLE_CLIENT_ID}
+      # client_secret: ${GOOGLE_CLIENT_SECRET}
+    
+    github:
+      enabled: true
+      # client_id: ${GITHUB_CLIENT_ID}
+      # client_secret: ${GITHUB_CLIENT_SECRET}
+    
+    apple:
+      enabled: false
+      # Benötigt Apple Developer Account
+  
+  # Admin-Berechtigungen
+  # Admins können: Aufgaben verifizieren, Punkte anpassen, User verwalten
+  admins:
+    # Nach Email
+    emails:
+      - "admin@makerspace-beispiel.de"
+      - "vorstand@makerspace-beispiel.de"
+    
+    # Nach GitHub Username (falls GitHub Auth genutzt wird)
+    github_usernames:
+      - "admin-username"
+
+# =============================================================================
+# AUFGABEN-EINSTELLUNGEN
+# =============================================================================
+tasks:
+  # Standard-Punkte für neue Aufgaben
+  default_points: 5
+  
+  # Minimum/Maximum Punkte
+  min_points: 1
+  max_points: 50
+  
+  # Foto bei Erledigung
+  photo_required_default: false
+  
+  # Maximale Foto-Größe in MB
+  max_photo_size_mb: 10
+  
+  # Wiederkehrende Aufgaben
+  recurring:
+    # Erlaubte Intervalle
+    intervals:
+      - daily
+      - weekly
+      - biweekly
+      - monthly
+    
+    # Auto-Erstellung: Wie viele Tage im Voraus
+    create_ahead_days: 7
+
+# =============================================================================
+# QR-CODE EINSTELLUNGEN
+# =============================================================================
+qr_codes:
+  # Basis-URL für QR-Codes
+  base_url: "https://tasks.makerspace-beispiel.de/qr"
+  
+  # Format der QR-Code IDs
+  # Beispiel: "reinigung-absaugung-001"
+  id_format: "{category}-{name}-{number}"
+
+# =============================================================================
+# UI/DESIGN
+# =============================================================================
+ui:
+  # Farbschema
+  colors:
+    primary: "#3B82F6"    # Blau
+    secondary: "#6B7280"  # Grau
+    success: "#10B981"    # Grün
+    warning: "#F59E0B"    # Orange
+    error: "#EF4444"      # Rot
+    background: "#F9FAFB"
+    text: "#111827"
+  
+  # Dark Mode
+  dark_mode:
+    enabled: true
+    default: "system"  # "light", "dark", "system"
+
+# =============================================================================
+# FEATURES (Aktivieren/Deaktivieren)
+# =============================================================================
+features:
+  # User können Aufgaben vorschlagen
+  user_can_create_tasks: true
+  
+  # Community-Voting für Punktewert
+  community_voting: false
+  
+  # Kommentare zu Aufgaben
+  comments: true
+  
+  # Rangliste/Leaderboard
+  leaderboard: false
+  
+  # Push-Notifications
+  push_notifications: false
+  
+  # Email-Benachrichtigungen
+  email_notifications: false

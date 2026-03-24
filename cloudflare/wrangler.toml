@@ -1,0 +1,17 @@
+name = "makerkarma-api"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+# Non-secret config (public)
+FRONTEND_URL = "https://freegroup.github.io/MakerKarma"
+ALLOWED_ORIGINS = "https://freegroup.github.io,http://localhost:5173"
+GITHUB_REPOSITORY = "freegroup/MakerKarma"
+
+# Secrets (set via: wrangler secret put SECRET_NAME)
+# GITHUB_BOT_TOKEN   - GitHub PAT with repo scope
+# GOOGLE_CLIENT_ID
+# GOOGLE_CLIENT_SECRET
+# GITHUB_CLIENT_ID
+# GITHUB_CLIENT_SECRET
+# JWT_SECRET          - Random string for signing JWTs
