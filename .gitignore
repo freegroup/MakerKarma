@@ -12,8 +12,7 @@ dist/
 # Testing
 coverage/
 
-# Environment variables
-.env
+# Environment variables (local overrides only)
 .env.local
 .env.development.local
 .env.test.local
