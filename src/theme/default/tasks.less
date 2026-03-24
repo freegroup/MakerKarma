@@ -4,28 +4,30 @@
   &-title {
     font-size: @font-size-xl;
     font-weight: 700;
-    color: @gray-900;
+    color: @gray-800;
     margin-bottom: @spacing-3;
   }
 
-  &-loading { color: @gray-500; }
+  &-loading { color: @gray-600; }
   &-error { color: @color-error; }
-  &-empty { color: @gray-400; font-size: @font-size-sm; }
+  &-empty { color: @gray-500; font-size: @font-size-sm; }
 
   &-filter {
-    border: none; border-radius: @radius-full; background: @gray-100;
-    font-size: @font-size-xs; font-weight: 500; color: @gray-500;
+    border: none; border-radius: @radius-full;
+    background: fade(white, 50%);
+    backdrop-filter: blur(8px);
+    font-size: @font-size-xs; font-weight: 500; color: @gray-600;
     padding: @spacing-1 @spacing-3;
 
     &.active {
       background: var(--cat-color); color: white;
-      box-shadow: 0 2px 6px fade(black, 12%);
+      box-shadow: 0 2px 8px fade(black, 15%);
     }
   }
 
   &-filter-clear {
     background: none; border: none;
-    font-size: @font-size-xs; font-weight: 500; color: @gray-400;
+    font-size: @font-size-xs; font-weight: 500; color: @gray-500;
   }
 
   &-fab {

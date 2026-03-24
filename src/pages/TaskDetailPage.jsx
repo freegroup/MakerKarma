@@ -9,6 +9,7 @@ import Toast from '../components/Toast'
 import confetti from 'canvas-confetti'
 import QRCode from 'qrcode'
 import greetings from '../greetings.json'
+import karmaMotivation from '../greetings-karma.json'
 import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2 } from 'lucide-react'
 import './TaskDetailPage.less'
 
@@ -235,49 +236,52 @@ export default function TaskDetailPage() {
         </div>
       )}
 
-      <div className="detail-header">
-        <div className="detail-dot" style={{ '--cat-color': category.color }}>
-          <span>{category.name.charAt(0).toUpperCase()}</span>
-        </div>
-        <div>
-          <span className="detail-category-name">{category.name}</span>
+      <div className="detail-card">
+        <div className="detail-header">
+          <div className="detail-dot" style={{ '--cat-color': category.color }}>
+            <span>{category.name.charAt(0).toUpperCase()}</span>
+          </div>
           <h1 className="detail-title">{task.title}</h1>
         </div>
-      </div>
 
-      <div className="detail-categories">
-        {categories.map((cat) => (
-          <button
-            key={cat.key}
-            className={`detail-cat ${task.category === cat.key ? 'active' : ''}`}
-            style={{ '--cat-color': cat.color }}
-            onClick={() => {
-              if (task.category === cat.key) return
-              updateCategory({ category: cat.key })
-            }}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
+        {task.description && (
+          <div className="detail-desc">
+            <Markdown>{task.description}</Markdown>
+          </div>
+        )}
 
-      {task.description && (
-        <div className="detail-desc">
-          <Markdown>{task.description}</Markdown>
+        <div className="detail-categories">
+          {categories.map((cat) => (
+            <button
+              key={cat.key}
+              className={`detail-cat ${task.category === cat.key ? 'active' : ''}`}
+              style={{ '--cat-color': cat.color }}
+              onClick={() => {
+                if (task.category === cat.key) return
+                updateCategory({ category: cat.key })
+              }}
+            >
+              {cat.name}
+            </button>
+          ))}
         </div>
-      )}
 
-      <div className="detail-info">
-        {task.points > 0 && (
-          <div className="detail-info-item">
-            {Array.from({ length: task.points }, (_, i) => <Star key={i} size={16} />)}
-          </div>
-        )}
-        {task.recurring && (
-          <div className="detail-info-item">
-            <Clock size={16} /> Wiederkehrend
-          </div>
-        )}
+        <div className="detail-footer">
+          <span className="detail-footer-karma" onClick={() => {
+            if (task.points > 0) {
+              const msg = karmaMotivation[Math.floor(Math.random() * karmaMotivation.length)].replace(/\{n\}/g, task.points)
+              setSuccessMsg(msg)
+            }
+          }}>
+            {task.points > 0 && Array.from({ length: task.points }, (_, i) => <Star key={i} size={12} />)}
+          </span>
+          <span className="detail-footer-tag">
+            {task.recurring && <><Clock size={12} /> Wiederkehrend</>}
+          </span>
+          <span className="detail-footer-date">
+            {new Date(task.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}
+          </span>
+        </div>
       </div>
 
       {comments.length > 0 && (
@@ -286,10 +290,10 @@ export default function TaskDetailPage() {
             <div key={msg.id} className={`detail-chat-msg ${msg.isCompletion ? 'detail-chat-msg--done' : ''}`}>
               <div className="detail-chat-bubble">
                 <Markdown>{msg.text}</Markdown>
+                <span className="detail-chat-time">
+                  {new Date(msg.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                </span>
               </div>
-              <span className="detail-chat-time">
-                {new Date(msg.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
-              </span>
             </div>
           ))}
         </div>

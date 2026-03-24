@@ -1,33 +1,41 @@
 @import './variables.less';
 
 .appheader {
-  background: linear-gradient(135deg, @gray-900 0%, #1a1a2e 50%, @gray-900 100%);
-  box-shadow: 0 4px 20px fade(#6366f1, 15%), 0 1px 3px fade(black, 20%);
+  background: fade(#2a2a3e, 90%);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 2px 16px fade(black, 15%);
+  padding: @spacing-3 0;
 
   &-back {
     background: none;
     border: none;
-    color: fade(white, 80%);
-
-    &:hover { color: white; }
+    color: fade(white, 70%);
   }
 
   &-right button {
     background: none;
     border: none;
-    color: fade(white, 80%);
+    color: fade(white, 70%);
     cursor: pointer;
-
-    &:hover { color: white; }
   }
 
   &-title {
     font-size: @font-size-lg;
-    font-weight: 900;
-    background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.03em;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.02em;
+
+    span {
+      font-weight: 300;
+      color: #f9a8b8;
+    }
+  }
+
+  &-slogan {
+    font-size: @font-size-xs;
+    color: fade(white, 35%);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    margin-top: 1px;
   }
 }

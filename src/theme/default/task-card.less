@@ -1,14 +1,16 @@
 @import './variables.less';
 
 .task-card {
-  background: white;
+  background: fade(white, 80%);
+  backdrop-filter: blur(12px);
+  border: 1px solid fade(white, 50%);
   border-radius: @radius-2xl;
-  box-shadow: @shadow-sm;
+  box-shadow: 0 2px 12px fade(black, 6%);
   padding: @spacing-4;
   gap: @spacing-4;
 
   &:hover {
-    box-shadow: @shadow-md;
+    box-shadow: 0 4px 16px fade(black, 10%);
   }
 
   &-dot {

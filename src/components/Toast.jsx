@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import './Toast.less'
 
-export default function Toast({ message, duration = 3000, onDone }) {
+export default function Toast({ message, duration = 4000, onDone }) {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false)
-      setTimeout(() => onDone?.(), 400) // wait for exit animation
+      setTimeout(() => onDone?.(), 500)
     }, duration)
     return () => clearTimeout(timer)
   }, [duration, onDone])

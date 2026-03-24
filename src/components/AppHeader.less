@@ -3,7 +3,7 @@
 .appheader {
   display: flex;
   align-items: center;
-  height: @navbar-height;
+  min-height: @navbar-height;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -26,11 +26,19 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  &-title {
+  &-center {
     flex: 1;
     text-align: center;
     overflow: hidden;
+  }
+
+  &-title {
+    overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-slogan {
     white-space: nowrap;
   }
 }

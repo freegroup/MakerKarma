@@ -3,40 +3,54 @@
 .detail {
   &-back { background: none; border: none; color: @gray-500; font-size: @font-size-sm; }
 
+  // Fact Sheet Card
+  &-card {
+    background: white;
+    border-radius: @radius-2xl;
+    padding: @spacing-5 @spacing-6 @spacing-3;
+    box-shadow: 0 1px 4px fade(black, 6%);
+    margin-bottom: @spacing-4;
+  }
+
   &-dot {
     border-radius: @radius-full;
     background: linear-gradient(135deg, var(--cat-color), fade(black, 15%));
-    box-shadow: 0 3px 12px fade(black, 20%);
 
     span {
       color: white;
       font-size: @font-size-xl;
       font-weight: 800;
-      text-shadow: 0 1px 2px fade(black, 20%);
     }
   }
 
-  &-category-name { font-size: @font-size-xs; color: @gray-500; font-weight: 600; }
+  &-category-name { font-size: @font-size-xs; color: @gray-400; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
   &-title { font-size: @font-size-xl; font-weight: 700; color: @gray-900; }
 
   &-cat {
-    border: 2px solid @gray-200; border-radius: @radius-full; background: white;
-    font-size: @font-size-xs; font-weight: 500; color: @gray-500;
+    border-radius: @radius-full; background: @gray-100;
+    font-size: @font-size-xs; font-weight: 500; color: @gray-400;
     padding: @spacing-1 @spacing-3; border: none;
 
     &.active {
       background: var(--cat-color); color: white;
-      box-shadow: 0 2px 8px fade(black, 15%);
     }
   }
 
-  &-desc {
-    color: @gray-600; font-size: @font-size-base;
-    img { border-radius: @radius-xl; }
-    a { color: @brand-primary; }
+  &-footer {
+    border-top: 1px solid @gray-100;
+    padding-top: @spacing-3;
+    margin-top: @spacing-2;
   }
 
-  &-info-item { font-size: @font-size-sm; color: @gray-500; }
+  &-footer-karma { color: @color-warning; font-size: @font-size-xs; }
+  &-footer-tag { color: @gray-400; font-size: @font-size-xs; }
+  &-footer-date { color: @gray-300; font-size: @font-size-xs; }
+
+  &-desc {
+    color: @gray-600; font-size: @font-size-sm; line-height: 1.6;
+    img { border-radius: @radius-lg; }
+    a { color: @brand-primary; }
+  }
 
   &-info-qr {
     font-size: @font-size-sm; color: @brand-primary; background: none; border: none; font-weight: 500;
@@ -51,21 +65,13 @@
     box-shadow: 0 -4px 20px fade(black, 15%);
   }
 
-  &-share-handle {
-    background: @gray-300; border-radius: @radius-full; margin-bottom: @spacing-4;
-  }
-
-  &-share-title {
-    font-size: @font-size-lg; font-weight: 700; color: @gray-900; margin-bottom: @spacing-4;
-  }
+  &-share-handle { background: @gray-300; border-radius: @radius-full; margin-bottom: @spacing-4; }
+  &-share-title { font-size: @font-size-lg; font-weight: 700; color: @gray-900; margin-bottom: @spacing-4; }
 
   &-share-option {
     background: none; border: none; border-bottom: 1px solid @gray-100;
-    font-size: @font-size-base; font-weight: 500; color: @gray-700;
-    padding: @spacing-4 0;
-
+    font-size: @font-size-base; font-weight: 500; color: @gray-700; padding: @spacing-4 0;
     &:last-of-type { border-bottom: none; }
-    &:hover { color: @brand-primary; }
   }
 
   &-share-cancel {
@@ -74,83 +80,51 @@
     padding: @spacing-3; margin-top: @spacing-4;
   }
 
-  // QR Code Overlay
-
-  &-qr-card {
-    background: white; border-radius: @radius-2xl; padding: @spacing-8; box-shadow: @shadow-lg;
-  }
-
+  // QR Code
+  &-qr-card { background: white; border-radius: @radius-2xl; padding: @spacing-8; box-shadow: @shadow-lg; }
   &-qr-hint { font-size: @font-size-sm; color: @gray-500; margin-top: @spacing-3; }
-
   &-qr-close {
     background: @gray-100; border: none; border-radius: @radius-full;
     font-size: @font-size-sm; font-weight: 600; color: @gray-600;
     padding: @spacing-2 @spacing-6; margin-top: @spacing-4;
   }
 
+  // FAB
   &-fab {
-    border-radius: @radius-full; background: @color-success; color: white;
-    border: none; box-shadow: @shadow-lg;
-    &:hover { background: darken(@color-success, 5%); }
-    &--done { background: @color-success; }
+    border-radius: @radius-full; background: @gray-800; color: white;
+    border: none; box-shadow: 0 4px 14px fade(black, 20%);
+    &:hover { background: @gray-900; }
   }
 
-  &-success, &-error-msg { color: @color-error; }
-
-  &-success-overlay {
-    background: fade(black, 60%);
-    backdrop-filter: blur(8px);
-  }
-
-  &-success-card {
-    background: white;
-    border-radius: @radius-2xl;
-    padding: @spacing-10 @spacing-8;
-    box-shadow: @shadow-lg;
-  }
-
-  &-success-emoji { font-size: 4rem; margin-bottom: @spacing-4; }
-
-  &-success-msg {
-    font-size: @font-size-xl;
-    font-weight: 700;
-    color: @gray-900;
-    margin-bottom: @spacing-6;
-  }
-
-  &-success-btn {
-    background: @color-success;
-    color: white;
-    border: none;
-    border-radius: @radius-full;
-    font-size: @font-size-base;
-    font-weight: 600;
-    padding: @spacing-3 @spacing-8;
-  }
+  &-error-msg { color: @color-error; }
 
   // Chat
   &-chat-bubble {
-    background: white; border-radius: @radius-lg; box-shadow: @shadow-sm;
-    font-size: @font-size-sm; padding: @spacing-3;
+    background: white; border-radius: @radius-xl;
+    font-size: @font-size-sm; padding: @spacing-3 @spacing-4;
+    box-shadow: 0 1px 3px fade(black, 5%);
     img { border-radius: @radius-md; }
   }
 
   &-chat-msg--done &-chat-bubble {
-    background: fade(@color-success, 10%); border-left: 3px solid @color-success;
+    background: @gray-50;
+    border-left: none;
   }
 
-  &-chat-time { font-size: @font-size-xs; color: @gray-400; }
+  &-chat-time { font-size: @font-size-xs; color: @gray-300; display: block; text-align: right; margin-top: @spacing-1; }
 
-  &-chat-input { background: white; border-top: 1px solid @gray-200; padding: @spacing-3 @spacing-4; }
-  &-chat-photo { background: none; border: none; color: @gray-400; &:hover { color: @brand-primary; } }
+  &-chat-input {
+    background: white; border-top: 1px solid @gray-100; padding: @spacing-3 @spacing-4;
+  }
+  &-chat-photo { background: none; border: none; color: @gray-400; &:hover { color: @gray-700; } }
 
   &-chat-text {
     border: 1px solid @gray-200; border-radius: @radius-full;
     font-size: @font-size-base; padding: @spacing-3 @spacing-4;
-    &:focus { border-color: @brand-primary; }
+    &:focus { border-color: @gray-400; }
   }
 
-  &-chat-send { background: @brand-primary; color: white; border: none; border-radius: @radius-full; }
+  &-chat-send { background: @gray-800; color: white; border: none; border-radius: @radius-full; }
   &-chat-preview button { border-radius: @radius-full; background: @overlay-dark; color: white; border: none; font-size: @font-size-xs; }
 
   // History

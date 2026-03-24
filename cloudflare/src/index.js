@@ -128,10 +128,9 @@ api.put('/tasks/:id/category', async (c) => {
   // Document category change as comment
   const user = c.get('user')
   const oldCat = currentLabels.find(l => l.startsWith('category-'))?.replace('category-', '') || '—'
-  const now = new Date().toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' })
   await octokit.issues.createComment({
     owner, repo, issue_number: id,
-    body: `Kategorie geändert: **${oldCat}** → **${category}**\nvon **${user.name}** am ${now}`,
+    body: `Kategorie: **${oldCat}** → **${category}** von ${user.name}`,
   })
 
   return c.json({ success: true, category })
