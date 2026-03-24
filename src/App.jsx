@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
+import ScrollToTop from './components/ScrollToTop'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import TasksPage from './pages/TasksPage'
@@ -29,6 +30,8 @@ function ProtectedRoute({ children }) {
 
 export default function App() {
   return (
+    <>
+    <ScrollToTop />
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route
@@ -56,5 +59,6 @@ export default function App() {
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   )
 }
