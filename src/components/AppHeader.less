@@ -9,12 +9,13 @@
   z-index: 20;
 
   &-left, &-right {
-    width: 48px;
-    flex-shrink: 0;
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
   }
+
+  &-left { justify-content: flex-start; padding-left: @spacing-2; }
+  &-right { justify-content: flex-end; padding-right: @spacing-2; }
 
   &-back {
     width: 48px;
@@ -27,9 +28,9 @@
   }
 
   &-center {
-    flex: 1;
     text-align: center;
     overflow: hidden;
+    flex-shrink: 1;
   }
 
   &-title {

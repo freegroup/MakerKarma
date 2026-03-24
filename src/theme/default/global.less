@@ -1,30 +1,37 @@
 @import './variables.less';
 
-// Layered landscape background
 body {
-  background: #f0eeeb;
+  background: #f5f3f0;
   color: @gray-800;
   font-family: @font-stack;
   min-height: 100vh;
 }
 
 .bottomnav {
-  background: fade(white, 90%);
-  backdrop-filter: blur(16px);
-  border-top: 1px solid fade(white, 50%);
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px fade(black, 10%);
 
   &-item {
-    color: @gray-400;
-    font-size: @font-size-xs;
+    color: @gray-300;
+    font-size: 10px;
+    font-weight: 500;
 
     &.active {
-      color: @gray-800;
+      color: white;
+      background: linear-gradient(135deg, #f9a8b8, #f4766b);
+      border-radius: @radius-full;
+      box-shadow: 0 4px 16px fade(#f4766b, 40%);
+
+      &::before {
+        background: white;
+      }
     }
   }
 }
 
 .spinner {
-  border: 3px solid fade(white, 40%);
-  border-top-color: @gray-700;
+  border: 3px solid fade(black, 8%);
+  border-top-color: @gray-600;
   border-radius: 50%;
 }

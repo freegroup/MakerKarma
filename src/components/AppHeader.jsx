@@ -18,7 +18,7 @@ export default function AppHeader({ title, showBack = false, right }) {
       </div>
       <div className="appheader-center">
         <h1 className="appheader-title">Karma Yoga <span>for Maker</span></h1>
-        {!showBack && <p className="appheader-slogan">Tue Gutes. Hilf allen.</p>}
+        <p className="appheader-slogan">Tue Gutes. Hilf allen.</p>
       </div>
       <div className="appheader-right">
         {right}

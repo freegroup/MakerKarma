@@ -125,6 +125,8 @@ export default function TaskDetailPage() {
     queryFn: () => fetchComments(id),
   })
 
+  const [pendingCategory, setPendingCategory] = useState(null)
+
   const { mutate: updateCategory } = useMutation({
     mutationFn: async (data) => {
       const res = await apiFetch(`/api/tasks/${id}/category`, {
@@ -134,6 +136,8 @@ export default function TaskDetailPage() {
       if (!res?.ok) throw new Error('Fehler')
       return res.json()
     },
+    onMutate: (data) => setPendingCategory(data.category),
+    onSettled: () => setPendingCategory(null),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task', id] })
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
@@ -254,10 +258,11 @@ export default function TaskDetailPage() {
           {categories.map((cat) => (
             <button
               key={cat.key}
-              className={`detail-cat ${task.category === cat.key ? 'active' : ''}`}
+              className={`detail-cat ${task.category === cat.key ? 'active' : ''} ${pendingCategory === cat.key ? 'pending' : ''}`}
               style={{ '--cat-color': cat.color }}
+              disabled={!!pendingCategory}
               onClick={() => {
-                if (task.category === cat.key) return
+                if (task.category === cat.key || pendingCategory) return
                 updateCategory({ category: cat.key })
               }}
             >
@@ -286,7 +291,7 @@ export default function TaskDetailPage() {
 
       {comments.length > 0 && (
         <div className="detail-chat">
-          {comments.map((msg) => (
+          {[...comments].reverse().map((msg) => (
             <div key={msg.id} className={`detail-chat-msg ${msg.isCompletion ? 'detail-chat-msg--done' : ''}`}>
               <div className="detail-chat-bubble">
                 <Markdown>{msg.text}</Markdown>

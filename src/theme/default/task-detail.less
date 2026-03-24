@@ -34,6 +34,13 @@
     &.active {
       background: var(--cat-color); color: white;
     }
+
+    &.pending {
+      background: var(--cat-color); color: white;
+      animation: cat-pulse 0.8s ease infinite;
+    }
+
+    &:disabled { cursor: default; }
   }
 
   &-footer {
