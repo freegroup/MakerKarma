@@ -1,9 +1,14 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
-import { CATEGORIES } from '../types'
 import { ArrowLeft, Star, Clock, CheckCircle } from 'lucide-react'
 import './TaskDetailPage.less'
+
+async function fetchCategories() {
+  const res = await apiFetch('/api/labels/categories')
+  if (!res) return []
+  return res.json()
+}
 
 async function fetchTask(id) {
   const res = await apiFetch(`/api/tasks/${id}`)
@@ -32,6 +37,12 @@ export default function TaskDetailPage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
+  const { data: categories = [] } = useQuery({
+    queryKey: ['category-labels'],
+    queryFn: fetchCategories,
+    staleTime: 1000 * 60 * 30,
+  })
+
   const { data: task, isLoading } = useQuery({
     queryKey: ['task', id],
     queryFn: () => fetchTask(id),
@@ -59,7 +70,7 @@ export default function TaskDetailPage() {
     return <div className="detail-error">Aufgabe nicht gefunden.</div>
   }
 
-  const category = CATEGORIES[task.category] || CATEGORIES.sonstiges
+  const category = categories.find(c => c.key === task?.category) || { icon: '📋', name: task?.category || '', color: '#6B7280' }
 
   return (
     <div className="detail">

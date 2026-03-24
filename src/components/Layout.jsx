@@ -1,8 +1,11 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { ClipboardList, User } from 'lucide-react'
+import { ClipboardList, User, Shield } from 'lucide-react'
+import { useAuthStore } from '../store/authStore'
 import './Layout.less'
 
 export default function Layout() {
+  const { user } = useAuthStore()
+
   return (
     <div className="layout">
       <header className="topbar">
@@ -18,6 +21,12 @@ export default function Layout() {
           <ClipboardList size={22} />
           <span>Aufgaben</span>
         </NavLink>
+        {user?.isAdmin && (
+          <NavLink to="/admin" className="bottomnav-item">
+            <Shield size={22} />
+            <span>Admin</span>
+          </NavLink>
+        )}
         <NavLink to="/profile" className="bottomnav-item">
           <User size={22} />
           <span>Profil</span>

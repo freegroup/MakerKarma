@@ -1,11 +1,24 @@
 import { useNavigate } from 'react-router-dom'
-import { CATEGORIES } from '../types'
+import { useQuery } from '@tanstack/react-query'
+import { apiFetch } from '../store/authStore'
 import { Star } from 'lucide-react'
 import './TaskCard.less'
 
+async function fetchCategories() {
+  const res = await apiFetch('/api/labels/categories')
+  if (!res) return []
+  return res.json()
+}
+
 export default function TaskCard({ task }) {
   const navigate = useNavigate()
-  const category = CATEGORIES[task.category] || CATEGORIES.sonstiges
+  const { data: categories = [] } = useQuery({
+    queryKey: ['category-labels'],
+    queryFn: fetchCategories,
+    staleTime: 1000 * 60 * 30,
+  })
+
+  const category = categories.find(c => c.key === task.category) || { icon: '📋', name: task.category || '', color: '#6B7280' }
 
   return (
     <div className="task-card" onClick={() => navigate(`/tasks/${task.id}`)}>

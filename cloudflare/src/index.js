@@ -57,9 +57,9 @@ app.get('/auth/github/callback', async (c) => {
 
       jwtPayload = {
         id: allowed.id || oauthUser.id,
-        email: allowed.email,
-        name: allowed.name,
-        avatarUrl: allowed.avatarUrl,
+        email: allowed.email || oauthUser.email,
+        name: allowed.name || oauthUser.name,
+        avatarUrl: allowed.avatarUrl || oauthUser.avatarUrl,
         provider: oauthUser.provider,
         role: allowed.role || 'member',
         isAdmin: allowed.role === 'admin',
@@ -102,10 +102,86 @@ api.post('/tasks', createTask)
 api.post('/tasks/:id/complete', completeTask)
 api.get('/tasks/:id/history', getTaskHistory)
 
+// Labels: fetch points-* labels from repo
+api.get('/labels/points', async (c) => {
+  const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })
+  const [owner, repo] = c.env.GITHUB_REPOSITORY.split('/')
+  const { data: labels } = await octokit.issues.listLabelsForRepo({ owner, repo, per_page: 100 })
+  const points = labels
+    .filter(l => /^points-\d+$/.test(l.name))
+    .map(l => parseInt(l.name.split('-')[1]))
+    .sort((a, b) => a - b)
+  return c.json(points)
+})
+
+// Labels: fetch category-* labels from repo
+api.get('/labels/categories', async (c) => {
+  const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })
+  const [owner, repo] = c.env.GITHUB_REPOSITORY.split('/')
+  const { data: labels } = await octokit.issues.listLabelsForRepo({ owner, repo, per_page: 100 })
+  const categories = labels
+    .filter(l => l.name.startsWith('category-'))
+    .map(l => {
+      const key = l.name.replace('category-', '')
+      const desc = l.description || key
+      const icon = /^\p{Emoji}/u.test(desc) ? desc.match(/^\p{Emoji_Presentation}/u)?.[0] || '' : ''
+      const name = icon ? desc.slice(icon.length).trim() : desc
+      return { key, name: name || key, icon, color: `#${l.color}` }
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
+  return c.json(categories)
+})
+
 // Users
 api.get('/users/me', getMe)
 api.get('/users', listUsers)
 api.put('/users/:id/admin', toggleAdmin)
+
+// Admin: Points per user per month
+api.get('/admin/points', async (c) => {
+  const jwtUser = c.get('user')
+  if (!jwtUser.isAdmin) {
+    return c.json({ error: 'Nur Admins' }, 403)
+  }
+
+  const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })
+  const [owner, repo] = c.env.GITHUB_REPOSITORY.split('/')
+
+  // Fetch all issue comments in the repo
+  const comments = await octokit.paginate(octokit.issues.listCommentsForRepo, {
+    owner, repo, per_page: 100,
+  })
+
+  // Parse completion comments and group by user + month
+  const pointsMap = {}
+
+  for (const comment of comments) {
+    const match = (comment.body || '').match(/<!-- completion:(.*?) -->/)
+    if (!match) continue
+
+    try {
+      const data = JSON.parse(match[1])
+      if (!data.userId || !data.points) continue
+
+      const month = data.completedAt?.slice(0, 7) // "2026-03"
+      if (!month) continue
+
+      const key = `${data.userId}|${month}`
+      if (!pointsMap[key]) {
+        pointsMap[key] = { userId: data.userId, userName: data.userName, month, points: 0, tasks: 0 }
+      }
+      pointsMap[key].points += data.points
+      pointsMap[key].tasks += 1
+    } catch { /* ignore */ }
+  }
+
+  // Convert to sorted array
+  const result = Object.values(pointsMap).sort((a, b) =>
+    b.month.localeCompare(a.month) || b.points - a.points
+  )
+
+  return c.json(result)
+})
 
 app.route('/api', api)
 

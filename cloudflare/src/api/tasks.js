@@ -49,7 +49,9 @@ export async function createTask(c) {
   const octokit = getOctokit(c.env)
   const { owner, repo } = getRepo(c.env)
 
-  const labels = [body.category || 'sonstiges']
+  const labels = []
+  if (body.category) labels.push(`category-${body.category}`)
+  if (body.points > 0) labels.push(`points-${body.points}`)
   if (body.recurring) labels.push(`recurring:${body.recurring}`)
   if (body.photoRequired) labels.push('photo-required')
 
@@ -77,17 +79,31 @@ export async function completeTask(c) {
   const octokit = getOctokit(c.env)
   const { owner, repo } = getRepo(c.env)
 
-  // Add completion comment
+  // Get task to read points
+  const { data: issue } = await octokit.issues.get({ owner, repo, issue_number: id })
+  const labels = issue.labels.map(l => l.name || l)
+  const VALID_POINTS = [1, 2, 3, 5, 8, 13]
+  const pointsLabel = labels.find(l => /^points-\d+$/.test(l))
+  const pointsRaw = pointsLabel ? parseInt(pointsLabel.split('-')[1]) : 0
+  const points = VALID_POINTS.includes(pointsRaw) ? pointsRaw : 0
+
+  const completion = {
+    userId: user.id,
+    userName: user.name,
+    points,
+    completedAt: new Date().toISOString(),
+  }
+
+  // Add completion comment with points
   await octokit.issues.createComment({
     owner,
     repo,
     issue_number: id,
-    body: `Erledigt von **${user.name}** (${user.email})\n\n<!-- completion:${JSON.stringify({ userId: user.id, userName: user.name, completedAt: new Date().toISOString() })} -->`,
+    body: `Erledigt von **${user.name}** — ${points} Punkte\n\n<!-- completion:${JSON.stringify(completion)} -->`,
   })
 
   // Close issue (unless recurring)
-  const { data: issue } = await octokit.issues.get({ owner, repo, issue_number: id })
-  const isRecurring = issue.labels.some(l => (l.name || l).startsWith('recurring:'))
+  const isRecurring = labels.some(l => l.startsWith('recurring:'))
 
   if (!isRecurring) {
     await octokit.issues.update({
@@ -128,8 +144,8 @@ export async function getTaskHistory(c) {
 // Convert GitHub Issue to Task object
 function issueToTask(issue) {
   const labels = issue.labels.map(l => l.name || l)
-  const categoryLabels = ['wartung', 'reinigung', 'werkstatt', 'garten', 'event', 'einkauf', 'sonstiges']
-  const category = labels.find(l => categoryLabels.includes(l)) || 'sonstiges'
+  const categoryLabel = labels.find(l => l.startsWith('category-'))
+  const category = categoryLabel ? categoryLabel.replace('category-', '') : null
   const recurringLabel = labels.find(l => l.startsWith('recurring:'))
   const recurring = recurringLabel ? recurringLabel.split(':')[1] : null
 
@@ -140,11 +156,15 @@ function issueToTask(issue) {
     try { metadata = JSON.parse(metaMatch[1]) } catch (e) { /* ignore */ }
   }
 
+  // Parse points from label (points-N)
+  const pointsLabel = labels.find(l => /^points-\d+$/.test(l))
+  const points = pointsLabel ? parseInt(pointsLabel.split('-')[1]) : 0
+
   return {
     id: issue.number,
     title: issue.title,
     description: (issue.body || '').replace(/\n*<!-- metadata:.*? -->/s, '').trim(),
-    points: metadata.points || 1,
+    points,
     category,
     status: issue.state === 'closed' ? 'completed' : 'open',
     recurring,

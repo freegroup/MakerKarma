@@ -1,3 +1,6 @@
+// Points (Fibonacci sequence)
+export const VALID_POINTS = [1, 2, 3, 5, 8, 13]
+
 // Task Categories
 export const TASK_CATEGORIES = ['wartung', 'reinigung', 'werkstatt', 'garten', 'event', 'einkauf', 'sonstiges']
 

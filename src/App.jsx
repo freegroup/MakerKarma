@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage'
 import TasksPage from './pages/TasksPage'
 import TaskDetailPage from './pages/TaskDetailPage'
 import ProfilePage from './pages/ProfilePage'
+import AdminPage from './pages/AdminPage'
+import CreateTaskPage from './pages/CreateTaskPage'
 
 function ProtectedRoute({ children }) {
   const { user, token } = useAuthStore()
@@ -38,8 +40,10 @@ export default function App() {
         }
       >
         <Route index element={<TasksPage />} />
+        <Route path="tasks/new" element={<CreateTaskPage />} />
         <Route path="tasks/:id" element={<TaskDetailPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="admin" element={<AdminPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
