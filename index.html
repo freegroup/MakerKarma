@@ -10,19 +10,37 @@
     <link rel="manifest" href="/MakerKarma/manifest.json" />
     <title>MakerKarma</title>
     <script>
-      // GitHub Pages SPA: restore route from redirect query
-      (function(l) {
+      // 1. Extract OAuth token from URL IMMEDIATELY (before any other scripts)
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var token = params.get('token');
+        if (token && token.indexOf('.') !== -1) {
+          try {
+            var payload = JSON.parse(atob(token.split('.')[1]));
+            localStorage.setItem('auth-storage', JSON.stringify({ state: { user: payload, token: token }, version: 0 }));
+          } catch(e) {}
+          window.history.replaceState({}, '', window.location.pathname);
+          return; // skip SPA redirect
+        }
+
+        var error = params.get('error');
+        if (error) {
+          // Keep error params, just redirect to /login
+          window.history.replaceState({}, '', window.location.pathname + 'login' + window.location.search);
+          return;
+        }
+
+        // 2. GitHub Pages SPA: restore route from 404 redirect
+        var l = window.location;
         if (l.search[1] === '/') {
           var decoded = l.search.slice(1).split('&').map(function(s) {
             return s.replace(/~and~/g, '&')
           }).join('?');
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
-          );
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
-      }(window.location))
+      })();
     </script>
-    <script type="module" crossorigin src="/MakerKarma/assets/index-KhcbfY6a.js"></script>
+    <script type="module" crossorigin src="/MakerKarma/assets/index-Dl7LDCC8.js"></script>
     <link rel="stylesheet" crossorigin href="/MakerKarma/assets/index-CXj6QPPk.css">
   </head>
   <body>
