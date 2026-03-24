@@ -52,7 +52,11 @@ app.get('/auth/github/callback', async (c) => {
       )
 
       if (!allowed) {
-        return c.redirect(`${frontendUrl}?error=not_allowed`)
+        const params = new URLSearchParams({
+          error: 'not_allowed',
+          detail: `Email "${oauthUser.email}" / ID "${oauthUser.id}" ist nicht in der Allow-List. Kontaktiere einen Admin.`,
+        })
+        return c.redirect(`${frontendUrl}?${params}`)
       }
 
       jwtPayload = {

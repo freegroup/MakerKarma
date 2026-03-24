@@ -31,6 +31,28 @@
     margin-bottom: @spacing-8;
   }
 
+  &-error {
+    background: fade(@color-error, 8%);
+    border: 1px solid fade(@color-error, 20%);
+    border-radius: @radius-lg;
+    padding: @spacing-3 @spacing-4;
+    margin-bottom: @spacing-4;
+    text-align: left;
+
+    &-msg {
+      color: @color-error;
+      font-size: @font-size-sm;
+      font-weight: 600;
+    }
+
+    &-detail {
+      color: @gray-600;
+      font-size: @font-size-xs;
+      margin-top: @spacing-1;
+      word-break: break-all;
+    }
+  }
+
   &-buttons {
     display: flex;
     flex-direction: column;
