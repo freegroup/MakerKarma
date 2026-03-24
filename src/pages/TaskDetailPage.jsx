@@ -291,7 +291,7 @@ export default function TaskDetailPage() {
               <div className="detail-chat-bubble">
                 <Markdown>{msg.text}</Markdown>
                 <span className="detail-chat-time">
-                  {new Date(msg.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                  {new Date(msg.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             </div>
