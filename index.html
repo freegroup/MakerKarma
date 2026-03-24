@@ -10,34 +10,52 @@
     <link rel="manifest" href="/manifest.json" />
     <title>MakerKarma</title>
     <script>
-      // 1. Extract OAuth token from URL IMMEDIATELY (before any other scripts)
+      // OAuth token extraction + SPA routing (runs before any module scripts)
       (function() {
         var params = new URLSearchParams(window.location.search);
         var token = params.get('token');
+        var error = params.get('error');
+
+        console.log('[Auth] URL:', window.location.href);
+        console.log('[Auth] search params:', window.location.search);
+        console.log('[Auth] token found:', !!token, token ? '(' + token.length + ' chars)' : '');
+        console.log('[Auth] error found:', error || 'none');
+
         if (token && token.indexOf('.') !== -1) {
+          console.log('[Auth] Valid JWT detected, extracting payload...');
           try {
             var payload = JSON.parse(atob(token.split('.')[1]));
+            console.log('[Auth] Payload:', JSON.stringify(payload));
             localStorage.setItem('auth-storage', JSON.stringify({ state: { user: payload, token: token }, version: 0 }));
-          } catch(e) {}
+            console.log('[Auth] Stored in localStorage ✓');
+          } catch(e) {
+            console.error('[Auth] Failed to parse JWT:', e.message);
+          }
           window.history.replaceState({}, '', window.location.pathname);
-          return; // skip SPA redirect
-        }
-
-        var error = params.get('error');
-        if (error) {
-          // Keep error params, just redirect to /login
-          window.history.replaceState({}, '', window.location.pathname + 'login' + window.location.search);
+          console.log('[Auth] Cleaned URL → ', window.location.pathname);
           return;
         }
 
-        // 2. GitHub Pages SPA: restore route from 404 redirect
+        if (token) {
+          console.warn('[Auth] Token found but not a valid JWT (no dots):', token);
+        }
+
+        if (error) {
+          console.log('[Auth] Error redirect, keeping params for login page');
+          return;
+        }
+
+        // GitHub Pages SPA: restore route from 404 redirect
         var l = window.location;
         if (l.search[1] === '/') {
           var decoded = l.search.slice(1).split('&').map(function(s) {
             return s.replace(/~and~/g, '&')
           }).join('?');
+          console.log('[Auth] SPA redirect restored:', decoded);
           window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
         }
+
+        console.log('[Auth] localStorage auth-storage:', localStorage.getItem('auth-storage') ? 'exists' : 'empty');
       })();
     </script>
   </head>
