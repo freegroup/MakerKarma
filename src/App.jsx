@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/Layout'
@@ -8,6 +9,18 @@ import ProfilePage from './pages/ProfilePage'
 
 function ProtectedRoute({ children }) {
   const { user, token } = useAuthStore()
+  const [hydrated, setHydrated] = useState(false)
+
+  useEffect(() => {
+    // Wait for Zustand persist to hydrate from localStorage
+    const unsub = useAuthStore.persist.onFinishHydration(() => setHydrated(true))
+    // Already hydrated?
+    if (useAuthStore.persist.hasHydrated()) setHydrated(true)
+    return unsub
+  }, [])
+
+  if (!hydrated) return null
+
   if (!user || !token) return <Navigate to="/login" replace />
   return children
 }
