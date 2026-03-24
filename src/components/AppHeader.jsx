@@ -9,7 +9,9 @@ export default function AppHeader({ title, showBack = false, right }) {
     <header className="appheader">
       <div className="appheader-left">
         {showBack && (
-          <button className="appheader-back" onClick={() => navigate(-1)}>
+          <button className="appheader-back" onClick={() => {
+            window.history.length > 1 ? navigate(-1) : navigate('/')
+          }}>
             <ArrowLeft size={24} />
           </button>
         )}
