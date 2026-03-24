@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
-import TokenHandler from './components/TokenHandler'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
 import TasksPage from './pages/TasksPage'
@@ -15,24 +14,21 @@ function ProtectedRoute({ children }) {
 
 export default function App() {
   return (
-    <>
-      <TokenHandler />
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<TasksPage />} />
-          <Route path="tasks/:id" element={<TaskDetailPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<TasksPage />} />
+        <Route path="tasks/:id" element={<TaskDetailPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }

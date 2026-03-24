@@ -55,15 +55,6 @@ app.get('/auth/github/callback', async (c) => {
         return c.redirect(`${frontendUrl}?error=not_allowed`)
       }
 
-      // Update user data on login
-      allowed.name = oauthUser.name
-      allowed.avatarUrl = oauthUser.avatarUrl
-      allowed.provider = oauthUser.provider
-      allowed.lastLogin = new Date().toISOString()
-      if (!allowed.id) allowed.id = oauthUser.id
-
-      await writeUsers(c.env, users, null)
-
       jwtPayload = {
         id: allowed.id || oauthUser.id,
         email: allowed.email,
@@ -88,9 +79,10 @@ app.get('/auth/github/callback', async (c) => {
 
     const token = await signJWT(jwtPayload, c.env.JWT_SECRET)
 
-    // Redirect to frontend with token
-    const sep = frontendUrl.includes('?') ? '&' : '?'
-    return c.redirect(`${frontendUrl}${sep}token=${token}`)
+    // Redirect to frontend with token (encode to preserve JWT dots)
+    const redirectUrl = new URL(frontendUrl)
+    redirectUrl.searchParams.set('token', token)
+    return c.redirect(redirectUrl.toString())
   } catch (e) {
     return c.redirect(`${frontendUrl}?error=${encodeURIComponent(e.message || 'server_error')}`)
   }
@@ -168,16 +160,26 @@ async function exchangeGithubCode(c, code) {
   const { access_token, error } = await tokenRes.json()
   if (error || !access_token) return { error: error || 'Kein Access Token' }
 
-  const userRes = await fetch('https://api.github.com/user', {
-    headers: { Authorization: `Bearer ${access_token}`, 'User-Agent': 'MakerKarma' },
-  })
+  const headers = { Authorization: `Bearer ${access_token}`, 'User-Agent': 'MakerKarma' }
 
+  const userRes = await fetch('https://api.github.com/user', { headers })
   if (!userRes.ok) return { error: 'GitHub Profil konnte nicht geladen werden' }
   const profile = await userRes.json()
 
+  // GitHub may return null email if set to private — fetch from emails API
+  let email = profile.email
+  if (!email) {
+    const emailRes = await fetch('https://api.github.com/user/emails', { headers })
+    if (emailRes.ok) {
+      const emails = await emailRes.json()
+      const primary = emails.find(e => e.primary) || emails[0]
+      email = primary?.email || null
+    }
+  }
+
   return {
     id: `github:${profile.id}`,
-    email: profile.email,
+    email: email,
     name: profile.name || profile.login,
     avatarUrl: profile.avatar_url,
     provider: 'github',
