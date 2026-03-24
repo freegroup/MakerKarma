@@ -1,5 +1,9 @@
 [
   {
+    "email": "andreas.herz@sap.com",
+    "role": "admin"
+  },
+  {
     "email": "a.herz@freegroup.de",
     "role": "admin"
   }
