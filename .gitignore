@@ -23,6 +23,9 @@ coverage/
 config/config.yaml
 config/config.local.yaml
 
+# Cloudflare Worker local secrets
+cloudflare/.dev.vars
+
 # IDE
 .idea/
 .vscode/
