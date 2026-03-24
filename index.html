@@ -24,7 +24,10 @@
         if (token && token.indexOf('.') !== -1) {
           console.log('[Auth] Valid JWT detected, extracting payload...');
           try {
-            var payload = JSON.parse(atob(token.split('.')[1]));
+            // base64url → base64 conversion (JWT uses url-safe encoding)
+            var b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            while (b64.length % 4) b64 += '=';
+            var payload = JSON.parse(atob(b64));
             console.log('[Auth] Payload:', JSON.stringify(payload));
             localStorage.setItem('auth-storage', JSON.stringify({ state: { user: payload, token: token }, version: 0 }));
             console.log('[Auth] Stored in localStorage ✓');
