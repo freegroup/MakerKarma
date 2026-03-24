@@ -6,14 +6,15 @@ import App from './App'
 import './index.less'
 
 // Handle OAuth token from URL BEFORE React renders
-const params = new URLSearchParams(window.location.search)
-const token = params.get('token')
-if (token) {
+// URL can be: /MakerKarma/?token=... or /MakerKarma?token=...
+const urlParams = new URLSearchParams(window.location.search)
+const oauthToken = urlParams.get('token')
+if (oauthToken && oauthToken.includes('.')) {
   try {
-    const user = JSON.parse(atob(token.split('.')[1]))
-    localStorage.setItem('auth-storage', JSON.stringify({ state: { user, token }, version: 0 }))
+    const payload = JSON.parse(atob(oauthToken.split('.')[1]))
+    localStorage.setItem('auth-storage', JSON.stringify({ state: { user: payload, token: oauthToken }, version: 0 }))
   } catch { /* invalid token */ }
-  // Clean URL
+  // Clean URL - keep pathname, remove query
   window.history.replaceState({}, '', window.location.pathname)
 }
 

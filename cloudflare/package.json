@@ -9,10 +9,10 @@
     "tail": "wrangler tail"
   },
   "dependencies": {
-    "hono": "^4.6.0",
-    "@octokit/rest": "^21.0.0"
+    "@octokit/rest": "^21.0.0",
+    "hono": "^4.6.0"
   },
   "devDependencies": {
-    "wrangler": "^3.90.0"
+    "wrangler": "^4.77.0"
   }
 }
