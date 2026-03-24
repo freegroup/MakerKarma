@@ -1,17 +1,29 @@
 {
-  "name": "MakerKarma",
-  "short_name": "MakerKarma",
-  "description": "Vereinsaufgaben erledigen und Punkte sammeln",
+  "name": "Karma Yoga for Maker",
+  "short_name": "KarmaYoga",
+  "description": "Tue Gutes. Sammle Karma.",
   "start_url": "/MakerKarma/",
   "scope": "/MakerKarma/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "background_color": "#2a2a3e",
+  "theme_color": "#2a2a3e",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
