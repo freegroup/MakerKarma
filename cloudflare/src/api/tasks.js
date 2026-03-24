@@ -52,7 +52,7 @@ export async function createTask(c) {
   const labels = []
   if (body.category) labels.push(`category-${body.category}`)
   if (body.points > 0) labels.push(`points-${body.points}`)
-  if (body.recurring) labels.push(`recurring:${body.recurring}`)
+  if (body.recurring) labels.push('recurring')
   if (body.photoRequired) labels.push('photo-required')
 
   let description = body.description || ''
@@ -125,8 +125,8 @@ export async function completeTask(c) {
     body: `Erledigt von **${user.name}** — ${points} Punkte\n\n<!-- completion:${JSON.stringify(completion)} -->`,
   })
 
-  // Close issue (unless recurring)
-  const isRecurring = labels.some(l => l.startsWith('recurring:'))
+  // Close issue (unless recurring — recurring stays open, only comment counts)
+  const isRecurring = labels.includes('recurring') || labels.some(l => l.startsWith('recurring:'))
 
   if (!isRecurring) {
     await octokit.issues.update({
@@ -243,7 +243,7 @@ function issueToTask(issue) {
   const categoryLabel = labels.find(l => l.startsWith('category-'))
   const category = categoryLabel ? categoryLabel.replace('category-', '') : null
   const recurringLabel = labels.find(l => l.startsWith('recurring:'))
-  const recurring = recurringLabel ? recurringLabel.split(':')[1] : null
+  const recurring = labels.includes('recurring') || !!recurringLabel
 
   // Parse metadata from issue body
   let metadata = {}

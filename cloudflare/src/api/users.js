@@ -85,17 +85,43 @@ export async function findOrCreateUser(env, oauthUser) {
   return newUser
 }
 
-// GET /api/users/me - Current user profile with points
+// GET /api/users/me - Current user profile with points from completions
 export async function getMe(c) {
   const jwtUser = c.get('user')
-  const { users } = await readUsers(c.env)
+  const octokit = getOctokit(c.env)
+  const { owner, repo } = getRepo(c.env)
 
-  const user = users.find(u => u.id === jwtUser.id)
-  if (!user) {
-    return c.json({ error: 'User nicht gefunden' }, 404)
+  // Calculate points from completion comments
+  const comments = await octokit.paginate(octokit.issues.listCommentsForRepo, {
+    owner, repo, per_page: 100,
+  })
+
+  let totalPoints = 0
+  let totalTasks = 0
+  const monthPoints = {}
+
+  for (const comment of comments) {
+    const match = (comment.body || '').match(/<!-- completion:(.*?) -->/)
+    if (!match) continue
+    try {
+      const data = JSON.parse(match[1])
+      if (data.userId !== jwtUser.id) continue
+      const pts = data.points || 0
+      totalPoints += pts
+      totalTasks += 1
+      const month = data.completedAt?.slice(0, 7)
+      if (month) {
+        monthPoints[month] = (monthPoints[month] || 0) + pts
+      }
+    } catch {}
   }
 
-  return c.json(user)
+  return c.json({
+    ...jwtUser,
+    points: totalPoints,
+    tasks: totalTasks,
+    monthPoints,
+  })
 }
 
 // GET /api/users - List all users (admin only)

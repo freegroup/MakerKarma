@@ -6,6 +6,8 @@ import { CATEGORIES } from '../types'
 import { ArrowLeft, Camera, X } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import greetings from '../greetings-post.json'
+import AppHeader from '../components/AppHeader'
+import Toast from '../components/Toast'
 import './CreateTaskPage.less'
 
 async function fetchCategories() {
@@ -70,6 +72,7 @@ export default function CreateTaskPage() {
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
   const [points, setPoints] = useState(1)
+  const [recurring, setRecurring] = useState(false)
   const [photo, setPhoto] = useState(null)
   const [successMsg, setSuccessMsg] = useState(null)
 
@@ -77,7 +80,6 @@ export default function CreateTaskPage() {
     mutationFn: createTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      // Confetti + random greeting
       const msg = greetings[Math.floor(Math.random() * greetings.length)]
       setSuccessMsg(msg)
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } })
@@ -100,6 +102,7 @@ export default function CreateTaskPage() {
       description,
       category,
       points,
+      recurring,
       photo: photo || undefined,
     })
   }
@@ -107,20 +110,10 @@ export default function CreateTaskPage() {
   return (
     <div className="create">
       {successMsg && (
-        <div className="create-success" onClick={() => navigate('/', { replace: true })}>
-          <div className="create-success-card">
-            <span className="create-success-emoji">🎉</span>
-            <p className="create-success-msg">{successMsg}</p>
-            <button className="create-success-btn">Weiter</button>
-          </div>
-        </div>
+        <Toast message={`🎉 ${successMsg}`} onDone={() => navigate('/', { replace: true })} />
       )}
 
-      <button className="create-back" onClick={() => navigate(-1)}>
-        <ArrowLeft size={20} /> Zurück
-      </button>
-
-      <h2 className="create-title">Wunsch an die Community</h2>
+      <AppHeader title="Wunsch an die Community" showBack />
 
       <form className="create-form" onSubmit={handleSubmit}>
         <input
@@ -170,6 +163,16 @@ export default function CreateTaskPage() {
                 {p}
               </button>
             ))}
+          </div>
+        </div>
+
+        <div className="create-toggle" onClick={() => setRecurring(!recurring)}>
+          <div className={`create-toggle-switch ${recurring ? 'active' : ''}`}>
+            <div className="create-toggle-knob" />
+          </div>
+          <div className="create-toggle-label">
+            <span>Wiederkehrend</span>
+            <span className="create-toggle-hint">Bleibt offen — kann immer wieder erledigt werden</span>
           </div>
         </div>
 

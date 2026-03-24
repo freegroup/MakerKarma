@@ -15,6 +15,56 @@
 
   &-info-item { font-size: @font-size-sm; color: @gray-500; }
 
+  &-info-qr {
+    font-size: @font-size-sm; color: @brand-primary; background: none; border: none; font-weight: 500;
+  }
+
+  // Share Bottom Sheet
+  &-share-overlay { background: fade(black, 40%); }
+
+  &-share-sheet {
+    background: white; border-radius: @radius-2xl @radius-2xl 0 0;
+    padding: @spacing-4 @spacing-6 @spacing-8;
+    box-shadow: 0 -4px 20px fade(black, 15%);
+  }
+
+  &-share-handle {
+    background: @gray-300; border-radius: @radius-full; margin-bottom: @spacing-4;
+  }
+
+  &-share-title {
+    font-size: @font-size-lg; font-weight: 700; color: @gray-900; margin-bottom: @spacing-4;
+  }
+
+  &-share-option {
+    background: none; border: none; border-bottom: 1px solid @gray-100;
+    font-size: @font-size-base; font-weight: 500; color: @gray-700;
+    padding: @spacing-4 0;
+
+    &:last-of-type { border-bottom: none; }
+    &:hover { color: @brand-primary; }
+  }
+
+  &-share-cancel {
+    background: @gray-100; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 600; color: @gray-500;
+    padding: @spacing-3; margin-top: @spacing-4;
+  }
+
+  // QR Code Overlay
+
+  &-qr-card {
+    background: white; border-radius: @radius-2xl; padding: @spacing-8; box-shadow: @shadow-lg;
+  }
+
+  &-qr-hint { font-size: @font-size-sm; color: @gray-500; margin-top: @spacing-3; }
+
+  &-qr-close {
+    background: @gray-100; border: none; border-radius: @radius-full;
+    font-size: @font-size-sm; font-weight: 600; color: @gray-600;
+    padding: @spacing-2 @spacing-6; margin-top: @spacing-4;
+  }
+
   &-fab {
     border-radius: @radius-full; background: @color-success; color: white;
     border: none; box-shadow: @shadow-lg;
@@ -22,8 +72,38 @@
     &--done { background: @color-success; }
   }
 
-  &-success { color: @color-success; font-weight: 500; }
-  &-error, &-error-msg { color: @color-error; }
+  &-success, &-error-msg { color: @color-error; }
+
+  &-success-overlay {
+    background: fade(black, 60%);
+    backdrop-filter: blur(8px);
+  }
+
+  &-success-card {
+    background: white;
+    border-radius: @radius-2xl;
+    padding: @spacing-10 @spacing-8;
+    box-shadow: @shadow-lg;
+  }
+
+  &-success-emoji { font-size: 4rem; margin-bottom: @spacing-4; }
+
+  &-success-msg {
+    font-size: @font-size-xl;
+    font-weight: 700;
+    color: @gray-900;
+    margin-bottom: @spacing-6;
+  }
+
+  &-success-btn {
+    background: @color-success;
+    color: white;
+    border: none;
+    border-radius: @radius-full;
+    font-size: @font-size-base;
+    font-weight: 600;
+    padding: @spacing-3 @spacing-8;
+  }
 
   // Chat
   &-chat-bubble {
@@ -38,12 +118,12 @@
 
   &-chat-time { font-size: @font-size-xs; color: @gray-400; }
 
-  &-chat-input { background: white; border-top: 1px solid @gray-200; padding: @spacing-2 @spacing-3; }
+  &-chat-input { background: white; border-top: 1px solid @gray-200; padding: @spacing-3 @spacing-4; }
   &-chat-photo { background: none; border: none; color: @gray-400; &:hover { color: @brand-primary; } }
 
   &-chat-text {
     border: 1px solid @gray-200; border-radius: @radius-full;
-    font-size: @font-size-sm; padding: @spacing-2 @spacing-4;
+    font-size: @font-size-base; padding: @spacing-3 @spacing-4;
     &:focus { border-color: @brand-primary; }
   }
 

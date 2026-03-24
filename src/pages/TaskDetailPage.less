@@ -59,6 +59,81 @@
     }
   }
 
+  &-info-qr {
+    display: flex;
+    align-items: center;
+    gap: @spacing-1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &-share-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  &-share-sheet {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    animation: sheet-up 0.3s ease;
+  }
+
+  &-share-handle {
+    width: 36px;
+    height: 4px;
+    align-self: center;
+  }
+
+  &-share-option {
+    display: flex;
+    align-items: center;
+    gap: @spacing-3;
+    width: 100%;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  &-share-cancel {
+    width: 100%;
+    cursor: pointer;
+  }
+
+  @keyframes sheet-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  &-qr-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-qr-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    img {
+      width: 250px;
+      height: 250px;
+    }
+  }
+
+  &-qr-close {
+    cursor: pointer;
+  }
+
   &-fab {
     position: fixed;
     bottom: calc(@spacing-4 + 56px + env(safe-area-inset-bottom));
@@ -169,6 +244,32 @@
 
   &-success {
     text-align: center;
+  }
+
+  &-success-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  &-success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 300px;
+  }
+
+  &-success-emoji {
+    display: block;
+  }
+
+  &-success-btn {
+    cursor: pointer;
   }
 
   &-error {

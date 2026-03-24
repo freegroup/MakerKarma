@@ -1,0 +1,26 @@
+@import './variables.less';
+
+.appheader {
+  background: white;
+  box-shadow: 0 1px 3px fade(black, 8%);
+
+  &-back {
+    background: none;
+    border: none;
+    color: @brand-primary;
+  }
+
+  &-right button {
+    background: none;
+    border: none;
+    color: @brand-primary;
+    cursor: pointer;
+  }
+
+  &-title {
+    font-size: @font-size-lg;
+    font-weight: 800;
+    color: @brand-primary;
+    letter-spacing: -0.02em;
+  }
+}

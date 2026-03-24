@@ -71,6 +71,43 @@
     transition: all 0.15s;
   }
 
+  &-toggle {
+    display: flex;
+    align-items: center;
+    gap: @spacing-4;
+    cursor: pointer;
+  }
+
+  &-toggle-switch {
+    width: 52px;
+    height: 30px;
+    flex-shrink: 0;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  &-toggle-knob {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.2s;
+  }
+
+  &-toggle-switch.active &-toggle-knob {
+    transform: translateX(22px);
+  }
+
+  &-toggle-label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-toggle-hint {
+    display: block;
+  }
+
   &-photo-btn {
     display: flex;
     align-items: center;

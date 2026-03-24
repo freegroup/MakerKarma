@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(npx wrangler:*)"
+      "Bash(npx wrangler:*)",
+      "Bash(node -e \"require\\(''esbuild''\\).transform\\(require\\(''fs''\\).readFileSync\\(''src/pages/TaskDetailPage.jsx'',''utf8''\\),{jsx:''automatic'',loader:''jsx''}\\).then\\(\\(\\)=>console.log\\(''OK''\\)\\).catch\\(e=>console.log\\(e.message\\)\\)\")",
+      "Bash(xxd)",
+      "Bash(node -e \":*)"
     ]
   }
 }

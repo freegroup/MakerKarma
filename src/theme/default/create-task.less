@@ -31,6 +31,23 @@
     &.active { border-color: @color-warning; background: @color-warning; color: white; box-shadow: 0 2px 8px fade(@color-warning, 30%); }
   }
 
+  &-toggle-switch {
+    background: @gray-200; border-radius: @radius-full;
+    &.active { background: @brand-primary; }
+  }
+
+  &-toggle-knob {
+    background: white; border-radius: @radius-full; box-shadow: @shadow-sm;
+  }
+
+  &-toggle-label span:first-child {
+    font-size: @font-size-base; font-weight: 600; color: @gray-700;
+  }
+
+  &-toggle-hint {
+    font-size: @font-size-xs; color: @gray-400;
+  }
+
   &-photo-btn {
     border: 2px dashed @gray-300; border-radius: @radius-2xl; background: @gray-50;
     color: @gray-400; font-size: @font-size-sm;

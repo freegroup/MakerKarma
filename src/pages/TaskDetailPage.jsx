@@ -1,10 +1,14 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import Markdown from 'react-markdown'
+import AppHeader from '../components/AppHeader'
+import Toast from '../components/Toast'
 import confetti from 'canvas-confetti'
-import { ArrowLeft, Star, Clock, Check, Send, Camera } from 'lucide-react'
+import QRCode from 'qrcode'
+import greetings from '../greetings.json'
+import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2 } from 'lucide-react'
 import './TaskDetailPage.less'
 
 async function fetchCategories() {
@@ -77,6 +81,38 @@ export default function TaskDetailPage() {
     staleTime: 1000 * 60 * 30,
   })
 
+  const [successMsg, setSuccessMsg] = useState(null)
+  const [qrDataUrl, setQrDataUrl] = useState(null)
+
+  const deepLink = `${window.location.origin}${import.meta.env.BASE_URL}tasks/${id}`
+
+  const [shareOpen, setShareOpen] = useState(false)
+
+  const generateQr = useCallback(async () => {
+    const url = await QRCode.toDataURL(deepLink, { width: 300, margin: 2 })
+    setQrDataUrl(url)
+  }, [deepLink])
+
+  async function handleNativeShare() {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: task?.title, url: deepLink })
+      } catch {}
+    }
+    setShareOpen(false)
+  }
+
+  async function handleCopyLink() {
+    await navigator.clipboard?.writeText(deepLink)
+    setShareOpen(false)
+    setSuccessMsg('Link kopiert!')
+  }
+
+  async function handleShowQr() {
+    await generateQr()
+    setShareOpen(false)
+  }
+
   const { data: task, isLoading } = useQuery({
     queryKey: ['task', id],
     queryFn: () => fetchTask(id),
@@ -90,10 +126,14 @@ export default function TaskDetailPage() {
   const completeMutation = useMutation({
     mutationFn: () => completeTask(id),
     onSuccess: () => {
-      confetti({ particleCount: 150, spread: 80, origin: { y: 0.9, x: 0.9 } })
+      const msg = greetings[Math.floor(Math.random() * greetings.length)]
+      setSuccessMsg(msg)
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } })
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       queryClient.invalidateQueries({ queryKey: ['task', id] })
       queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
+      queryClient.invalidateQueries({ queryKey: ['profile'] })
+      queryClient.invalidateQueries({ queryKey: ['admin-points'] })
     },
   })
 
@@ -140,9 +180,44 @@ export default function TaskDetailPage() {
 
   return (
     <div className="detail">
-      <button className="detail-back" onClick={() => navigate(-1)}>
-        <ArrowLeft size={20} /> Zurück
-      </button>
+      {successMsg && (
+        <Toast message={successMsg} onDone={() => setSuccessMsg(null)} />
+      )}
+
+      {shareOpen && (
+        <div className="detail-share-overlay" onClick={() => setShareOpen(false)}>
+          <div className="detail-share-sheet" onClick={e => e.stopPropagation()}>
+            <div className="detail-share-handle" />
+            <h3 className="detail-share-title">Teilen</h3>
+            <button className="detail-share-option" onClick={handleNativeShare}>
+              <Share2 size={20} /> Social Media
+            </button>
+            <button className="detail-share-option" onClick={handleShowQr}>
+              <QrCode size={20} /> QR-Code
+            </button>
+            <button className="detail-share-option" onClick={handleCopyLink}>
+              <Link2 size={20} /> Link kopieren
+            </button>
+            <button className="detail-share-cancel" onClick={() => setShareOpen(false)}>
+              Abbrechen
+            </button>
+          </div>
+        </div>
+      )}
+
+      {qrDataUrl && (
+        <div className="detail-qr-overlay" onClick={() => setQrDataUrl(null)}>
+          <div className="detail-qr-card" onClick={e => e.stopPropagation()}>
+            <img src={qrDataUrl} alt="QR Code" />
+            <p className="detail-qr-hint">Scannen um direkt hierher zu kommen</p>
+            <button className="detail-qr-close" onClick={() => setQrDataUrl(null)}>Schließen</button>
+          </div>
+        </div>
+      )}
+
+      <AppHeader title="MakerKarma" showBack right={
+        <button onClick={() => setShareOpen(true)}><Share2 size={22} /></button>
+      } />
 
       <div className="detail-header">
         <div className="detail-category" style={{ backgroundColor: category.color }}>
@@ -192,13 +267,14 @@ export default function TaskDetailPage() {
         <p className="detail-error-msg">{completeMutation.error.message}</p>
       )}
 
-      {commentPhoto && (
+      {!task.recurring && commentPhoto && (
         <div className="detail-chat-preview">
           <img src={commentPhoto} alt="Vorschau" />
           <button onClick={() => setCommentPhoto(null)}>✕</button>
         </div>
       )}
 
+      {!task.recurring && (
       <div className="detail-chat-input">
         <button className="detail-chat-photo" onClick={() => fileRef.current?.click()}>
           <Camera size={20} />
@@ -228,12 +304,13 @@ export default function TaskDetailPage() {
           <Send size={18} />
         </button>
       </div>
+      )}
 
-      {task.status !== 'completed' && (
+      {!completeMutation.isSuccess && (
         <button
-          className={`detail-fab ${completeMutation.isSuccess ? 'detail-fab--done' : ''}`}
+          className="detail-fab"
           onClick={() => completeMutation.mutate()}
-          disabled={completeMutation.isPending || completeMutation.isSuccess}
+          disabled={completeMutation.isPending}
         >
           <Check size={28} />
         </button>

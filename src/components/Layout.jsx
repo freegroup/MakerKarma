@@ -1,13 +1,12 @@
 import { Outlet, NavLink } from 'react-router-dom'
 import { Compass, User, Trophy } from 'lucide-react'
+import AppHeader from './AppHeader'
 import './Layout.less'
 
 export default function Layout() {
   return (
     <div className="layout">
-      <header className="topbar">
-        <h1 className="topbar-title">MakerKarma</h1>
-      </header>
+      <AppHeader title="MakerKarma" />
 
       <main className="content">
         <Outlet />

@@ -1,0 +1,30 @@
+@import '../theme/default/variables.less';
+
+.toast {
+  position: fixed;
+  top: calc(@navbar-height + @spacing-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  max-width: 90vw;
+  text-align: center;
+  pointer-events: none;
+
+  &--enter {
+    animation: toast-in 0.4s ease forwards;
+  }
+
+  &--exit {
+    animation: toast-out 0.4s ease forwards;
+  }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toast-out {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+}
