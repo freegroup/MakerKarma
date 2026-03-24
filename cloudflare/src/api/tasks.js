@@ -55,19 +55,42 @@ export async function createTask(c) {
   if (body.recurring) labels.push(`recurring:${body.recurring}`)
   if (body.photoRequired) labels.push('photo-required')
 
+  let description = body.description || ''
+
   const metadata = {
-    points: body.points || 1,
     createdBy: { id: user.id, name: user.name },
-    qrCode: body.qrCode || null,
   }
 
   const { data: issue } = await octokit.issues.create({
     owner,
     repo,
     title: body.title,
-    body: `${body.description || ''}\n\n<!-- metadata:${JSON.stringify(metadata)} -->`,
+    body: `${description}\n\n<!-- metadata:${JSON.stringify(metadata)} -->`,
     labels,
   })
+
+  // Upload photo after issue creation (filename: uploads/issue-{nr}-1.jpg)
+  if (body.photo) {
+    try {
+      const photoData = body.photo.replace(/^data:image\/\w+;base64,/, '')
+      const filename = `uploads/issue-${issue.number}-1.jpg`
+      await octokit.repos.createOrUpdateFileContents({
+        owner, repo,
+        path: filename,
+        message: `Foto für #${issue.number}: ${body.title}`,
+        content: photoData,
+      })
+      const photoUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${filename}`
+      // Update issue body with photo link
+      await octokit.issues.update({
+        owner, repo,
+        issue_number: issue.number,
+        body: `${description}\n\n![Foto](${photoUrl})\n\n<!-- metadata:${JSON.stringify(metadata)} -->`,
+      })
+    } catch (e) {
+      // Photo upload failed, issue still created without photo
+    }
+  }
 
   return c.json(issueToTask(issue), 201)
 }
@@ -115,6 +138,79 @@ export async function completeTask(c) {
   }
 
   return c.json({ success: true, recurring: isRecurring })
+}
+
+// GET /api/tasks/:id/comments - Get all comments as chat messages
+export async function getTaskComments(c) {
+  const id = parseInt(c.req.param('id'))
+  const octokit = getOctokit(c.env)
+  const { owner, repo } = getRepo(c.env)
+
+  const { data: comments } = await octokit.issues.listComments({
+    owner, repo, issue_number: id,
+  })
+
+  const messages = comments.map(comment => {
+    const completionMatch = comment.body.match(/<!-- completion:(.*?) -->/)
+    const isCompletion = !!completionMatch
+
+    // Strip HTML comments from display text
+    const text = comment.body.replace(/\n*<!-- .*? -->/g, '').trim()
+
+    let completion = null
+    if (completionMatch) {
+      try { completion = JSON.parse(completionMatch[1]) } catch {}
+    }
+
+    return {
+      id: comment.id,
+      text,
+      isCompletion,
+      completion,
+      createdAt: comment.created_at,
+    }
+  })
+
+  return c.json(messages)
+}
+
+// POST /api/tasks/:id/comment - Add a comment (text and/or photo)
+export async function addTaskComment(c) {
+  const id = parseInt(c.req.param('id'))
+  const user = c.get('user')
+  const body = await c.req.json()
+  const octokit = getOctokit(c.env)
+  const { owner, repo } = getRepo(c.env)
+
+  let commentBody = ''
+
+  // Upload photo if provided
+  if (body.photo) {
+    try {
+      const photoData = body.photo.replace(/^data:image\/\w+;base64,/, '')
+      const filename = `uploads/issue-${id}-comment-${Date.now()}.jpg`
+      await octokit.repos.createOrUpdateFileContents({
+        owner, repo,
+        path: filename,
+        message: `Kommentar-Foto für #${id}`,
+        content: photoData,
+      })
+      const photoUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/${filename}`
+      commentBody += `![Foto](${photoUrl})\n\n`
+    } catch {}
+  }
+
+  if (body.text) {
+    commentBody += body.text
+  }
+
+  commentBody += `\n\n<!-- comment:${JSON.stringify({ userId: user.id, userName: user.name })} -->`
+
+  const { data: comment } = await octokit.issues.createComment({
+    owner, repo, issue_number: id, body: commentBody,
+  })
+
+  return c.json({ id: comment.id }, 201)
 }
 
 // GET /api/tasks/:id/history - Get completion history

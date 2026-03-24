@@ -3,6 +3,15 @@
 ## Projektziel
 Eine WebApp für Vereinsmitglieder, um Aufgaben zu erledigen und "Sozialstunden/Punkte" zu sammeln. Ähnlich wie vereinsstunden.de, aber mit GitHub Issues als Backend.
 
+## Design-Philosophie
+- **Mobile-First Social App** — Die App orientiert sich an modernen Social Apps (Telegram, WhatsApp, Instagram) in Look & Feel und Bedienerführung
+- **Vertraute UX-Patterns**: FABs, Chat-Style Kommentare, Bottom Navigation, Pull-to-Refresh, Swipe-Gesten
+- **Screens statt Dialoge**: Neue Inhalte öffnen als eigener Screen (kein Modal/Dialog), wie bei nativen Mobile Apps
+- **Bottom-Nav nur auf Top-Level**: Aufgabenliste, Admin, Profil haben die Tab-Bar; Detail- und Erstellen-Screens nicht
+- **Freude erzeugen**: Confetti bei erledigten Aufgaben, Stern-Visualisierung für Punkte, sanfte Animationen
+- **Minimalistisch**: Wenig Text, große Touch-Targets, klare visuelle Hierarchie
+- **Dynamische Konfiguration**: Kategorien und Punkte-Werte kommen aus GitHub Labels — kein Hardcoding, Admin verwaltet alles über GitHub
+
 ## Tech Stack
 - **Frontend**: Vite + React (Plain JavaScript) → gehostet auf GitHub Pages
 - **Styling**: Less (Variablen-basiertes Theming in `src/theme/`)
@@ -25,11 +34,14 @@ GitHub Repo (privat)
 ```
 
 ## Auth-Flow
-1. User klickt "Login" → Redirect zu Google/GitHub OAuth
-2. OAuth-Callback mit `code` → Frontend schickt code an Worker
-3. Worker tauscht code gegen Provider-Token (serverseitig)
-4. Worker prüft ob Email in `users.json` steht (Allow-List)
-5. Worker erstellt JWT mit User-Daten + Rolle → Frontend speichert JWT
+1. User klickt "Login" → Frontend leitet zu Worker `/auth/github?redirect=<frontend_url>`
+2. Worker leitet zu GitHub OAuth weiter (Callback = Worker-URL)
+3. GitHub redirected zurück zum Worker mit `code`
+4. Worker tauscht code gegen Access Token + User-Profil
+5. Worker prüft ob Email in `users.json` steht (Allow-List, read-only)
+6. Worker erstellt JWT → Redirect zum Frontend mit `?token=...`
+7. Frontend extrahiert JWT aus URL (inline Script in index.html) → localStorage
+8. **Eine OAuth App** für Dev + Prod (Callback immer an Worker)
 
 ## Kernfeatures
 1. **Aufgabenverwaltung** - Basierend auf GitHub Issues (für User unsichtbar)

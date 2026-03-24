@@ -1,7 +1,10 @@
+import { useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
-import { ArrowLeft, Star, Clock, CheckCircle } from 'lucide-react'
+import Markdown from 'react-markdown'
+import confetti from 'canvas-confetti'
+import { ArrowLeft, Star, Clock, Check, Send, Camera } from 'lucide-react'
 import './TaskDetailPage.less'
 
 async function fetchCategories() {
@@ -16,8 +19,8 @@ async function fetchTask(id) {
   return res.json()
 }
 
-async function fetchHistory(id) {
-  const res = await apiFetch(`/api/tasks/${id}/history`)
+async function fetchComments(id) {
+  const res = await apiFetch(`/api/tasks/${id}/comments`)
   if (!res) return []
   return res.json()
 }
@@ -32,10 +35,41 @@ async function completeTask(id) {
   return res.json()
 }
 
+async function postComment(id, data) {
+  const res = await apiFetch(`/api/tasks/${id}/comment`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+  if (!res || !res.ok) throw new Error('Kommentar fehlgeschlagen')
+  return res.json()
+}
+
+function compressImage(file, maxWidth = 800) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ratio = Math.min(maxWidth / img.width, 1)
+        canvas.width = img.width * ratio
+        canvas.height = img.height * ratio
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+        resolve(canvas.toDataURL('image/jpeg', 0.7))
+      }
+      img.src = e.target.result
+    }
+    reader.readAsDataURL(file)
+  })
+}
+
 export default function TaskDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const fileRef = useRef()
+  const [commentText, setCommentText] = useState('')
+  const [commentPhoto, setCommentPhoto] = useState(null)
 
   const { data: categories = [] } = useQuery({
     queryKey: ['category-labels'],
@@ -48,19 +82,51 @@ export default function TaskDetailPage() {
     queryFn: () => fetchTask(id),
   })
 
-  const { data: history = [] } = useQuery({
-    queryKey: ['task-history', id],
-    queryFn: () => fetchHistory(id),
+  const { data: comments = [] } = useQuery({
+    queryKey: ['task-comments', id],
+    queryFn: () => fetchComments(id),
   })
 
-  const mutation = useMutation({
+  const completeMutation = useMutation({
     mutationFn: () => completeTask(id),
     onSuccess: () => {
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.9, x: 0.9 } })
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       queryClient.invalidateQueries({ queryKey: ['task', id] })
-      queryClient.invalidateQueries({ queryKey: ['task-history', id] })
+      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
     },
   })
+
+  const commentMutation = useMutation({
+    mutationFn: (data) => postComment(id, data),
+    onSuccess: () => {
+      setCommentText('')
+      setCommentPhoto(null)
+      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
+    },
+  })
+
+  async function handlePhotoSelect(e) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const compressed = await compressImage(file)
+    setCommentPhoto(compressed)
+  }
+
+  function handleSend() {
+    if (!commentText.trim() && !commentPhoto) return
+    commentMutation.mutate({
+      text: commentText.trim() || undefined,
+      photo: commentPhoto || undefined,
+    })
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
+    }
+  }
 
   if (isLoading) {
     return <div className="detail-loading"><div className="spinner" /></div>
@@ -89,13 +155,15 @@ export default function TaskDetailPage() {
       </div>
 
       {task.description && (
-        <p className="detail-desc">{task.description}</p>
+        <div className="detail-desc">
+          <Markdown>{task.description}</Markdown>
+        </div>
       )}
 
       <div className="detail-info">
         {task.points > 0 && (
           <div className="detail-info-item">
-            <Star size={16} /> {task.points} Punkte
+            {Array.from({ length: task.points }, (_, i) => <Star key={i} size={16} />)}
           </div>
         )}
         {task.recurring && (
@@ -105,34 +173,70 @@ export default function TaskDetailPage() {
         )}
       </div>
 
-      <button
-        className="detail-complete-btn"
-        onClick={() => mutation.mutate()}
-        disabled={mutation.isPending}
-      >
-        <CheckCircle size={20} />
-        {mutation.isPending ? 'Wird abgeschlossen...' : 'Aufgabe erledigt'}
-      </button>
-
-      {mutation.isSuccess && (
-        <p className="detail-success">Aufgabe erfolgreich abgeschlossen!</p>
-      )}
-      {mutation.isError && (
-        <p className="detail-error-msg">{mutation.error.message}</p>
-      )}
-
-      {history.length > 0 && (
-        <div className="detail-history">
-          <h3>Zuletzt erledigt</h3>
-          {history.map((entry, i) => (
-            <div key={i} className="detail-history-item">
-              <span>{entry.user}</span>
-              <span className="detail-history-date">
-                {new Date(entry.date).toLocaleDateString('de-DE')}
+      {comments.length > 0 && (
+        <div className="detail-chat">
+          {comments.map((msg) => (
+            <div key={msg.id} className={`detail-chat-msg ${msg.isCompletion ? 'detail-chat-msg--done' : ''}`}>
+              <div className="detail-chat-bubble">
+                <Markdown>{msg.text}</Markdown>
+              </div>
+              <span className="detail-chat-time">
+                {new Date(msg.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
           ))}
         </div>
+      )}
+
+      {completeMutation.isError && (
+        <p className="detail-error-msg">{completeMutation.error.message}</p>
+      )}
+
+      {commentPhoto && (
+        <div className="detail-chat-preview">
+          <img src={commentPhoto} alt="Vorschau" />
+          <button onClick={() => setCommentPhoto(null)}>✕</button>
+        </div>
+      )}
+
+      <div className="detail-chat-input">
+        <button className="detail-chat-photo" onClick={() => fileRef.current?.click()}>
+          <Camera size={20} />
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handlePhotoSelect}
+          hidden
+        />
+        <input
+          className="detail-chat-text"
+          type="text"
+          placeholder="Kommentar..."
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={commentMutation.isPending}
+        />
+        <button
+          className="detail-chat-send"
+          onClick={handleSend}
+          disabled={(!commentText.trim() && !commentPhoto) || commentMutation.isPending}
+        >
+          <Send size={18} />
+        </button>
+      </div>
+
+      {task.status !== 'completed' && (
+        <button
+          className={`detail-fab ${completeMutation.isSuccess ? 'detail-fab--done' : ''}`}
+          onClick={() => completeMutation.mutate()}
+          disabled={completeMutation.isPending || completeMutation.isSuccess}
+        >
+          <Check size={28} />
+        </button>
       )}
     </div>
   )

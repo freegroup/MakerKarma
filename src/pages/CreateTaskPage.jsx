@@ -89,16 +89,12 @@ export default function CreateTaskPage() {
     e.preventDefault()
     if (!title.trim()) return
 
-    let body = description
-    if (photo) {
-      body = `${description}\n\n![Foto](${photo})`
-    }
-
     mutation.mutate({
       title: title.trim(),
-      description: body,
+      description,
       category,
       points,
+      photo: photo || undefined,
     })
   }
 

@@ -33,7 +33,7 @@ export default function TaskCard({ task }) {
         <div className="task-card-meta">
           {task.points > 0 && (
             <span className="task-card-points">
-              <Star size={14} /> {task.points} Punkte
+              {Array.from({ length: task.points }, (_, i) => <Star key={i} size={14} />)}
             </span>
           )}
           {task.recurring && (

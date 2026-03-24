@@ -5,7 +5,7 @@ import { githubRedirect, githubCallback } from './auth/github.js'
 import { authMiddleware } from './middleware/auth.js'
 import { signJWT } from './middleware/jwt.js'
 import { findOrCreateUser, getMe, listUsers, toggleAdmin, readUsers, writeUsers } from './api/users.js'
-import { listTasks, getTask, createTask, completeTask, getTaskHistory } from './api/tasks.js'
+import { listTasks, getTask, createTask, completeTask, getTaskHistory, getTaskComments, addTaskComment } from './api/tasks.js'
 
 const app = new Hono()
 
@@ -104,6 +104,8 @@ api.get('/tasks', listTasks)
 api.get('/tasks/:id', getTask)
 api.post('/tasks', createTask)
 api.post('/tasks/:id/complete', completeTask)
+api.get('/tasks/:id/comments', getTaskComments)
+api.post('/tasks/:id/comment', addTaskComment)
 api.get('/tasks/:id/history', getTaskHistory)
 
 // Labels: fetch points-* labels from repo

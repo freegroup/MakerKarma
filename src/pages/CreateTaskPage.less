@@ -1,6 +1,10 @@
 @import '../theme/default.less';
 
 .create {
+  padding: @spacing-4;
+  max-width: 480px;
+  margin: 0 auto;
+
   &-back {
     display: flex;
     align-items: center;
@@ -24,20 +28,23 @@
   &-form {
     display: flex;
     flex-direction: column;
-    gap: @spacing-4;
+    gap: @spacing-5;
   }
 
   &-input {
     width: 100%;
     padding: @spacing-3 @spacing-4;
     border: 1px solid @gray-200;
-    border-radius: @radius-lg;
-    font-size: @font-size-base;
+    border-radius: @radius-xl;
+    font-size: @font-size-lg;
     font-family: @font-stack;
+    font-weight: 600;
     outline: none;
+    background: white;
 
     &:focus {
       border-color: @brand-primary;
+      box-shadow: 0 0 0 3px fade(@brand-primary, 10%);
     }
   }
 
@@ -45,14 +52,16 @@
     width: 100%;
     padding: @spacing-3 @spacing-4;
     border: 1px solid @gray-200;
-    border-radius: @radius-lg;
+    border-radius: @radius-xl;
     font-size: @font-size-base;
     font-family: @font-stack;
     resize: vertical;
     outline: none;
+    background: white;
 
     &:focus {
       border-color: @brand-primary;
+      box-shadow: 0 0 0 3px fade(@brand-primary, 10%);
     }
   }
 
@@ -73,11 +82,11 @@
   }
 
   &-cat {
-    padding: @spacing-2 @spacing-3;
-    border: 1px solid @gray-200;
+    padding: @spacing-2 @spacing-4;
+    border: 2px solid @gray-200;
     border-radius: @radius-full;
     background: white;
-    font-size: @font-size-xs;
+    font-size: @font-size-sm;
     cursor: pointer;
     transition: all 0.15s;
 
@@ -90,17 +99,17 @@
 
   &-points {
     display: flex;
-    gap: @spacing-2;
+    gap: @spacing-3;
   }
 
   &-point {
-    width: 44px;
-    height: 44px;
-    border-radius: @radius-lg;
-    border: 1px solid @gray-200;
+    width: 48px;
+    height: 48px;
+    border-radius: @radius-full;
+    border: 2px solid @gray-200;
     background: white;
-    font-size: @font-size-base;
-    font-weight: 600;
+    font-size: @font-size-lg;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.15s;
 
@@ -164,11 +173,12 @@
     background: @brand-primary;
     color: white;
     border: none;
-    border-radius: @radius-xl;
-    font-size: @font-size-base;
+    border-radius: @radius-full;
+    font-size: @font-size-lg;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.15s;
+    margin-top: @spacing-2;
 
     &:hover {
       background: @primary-700;

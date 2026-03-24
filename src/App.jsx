@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
@@ -40,10 +40,19 @@ export default function App() {
         }
       >
         <Route index element={<TasksPage />} />
-        <Route path="tasks/new" element={<CreateTaskPage />} />
-        <Route path="tasks/:id" element={<TaskDetailPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="admin" element={<AdminPage />} />
+      </Route>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Outlet />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="tasks/new" element={<CreateTaskPage />} />
+        <Route path="tasks/:id" element={<TaskDetailPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
