@@ -1,0 +1,18 @@
+@import '../theme/default/variables.less';
+
+.issue-item {
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+
+  &-desc {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-points {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+}

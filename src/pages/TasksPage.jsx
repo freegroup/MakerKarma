@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../store/authStore'
-import TaskCard from '../components/TaskCard'
+import IssueListItem from '../components/IssueListItem'
 import { Plus, X } from 'lucide-react'
 import './TasksPage.less'
 
@@ -94,7 +94,7 @@ export default function TasksPage() {
       ) : (
         <div className="tasks-list">
           {filteredTasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <IssueListItem key={task.id} task={task} />
           ))}
         </div>
       )}
