@@ -87,6 +87,7 @@ export default function TaskDetailPage() {
 
   const [successMsg, setSuccessMsg] = useState(null)
   const [qrDataUrl, setQrDataUrl] = useState(null)
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   const deepLink = `${window.location.origin}${import.meta.env.BASE_URL}tasks/${id}`
 
@@ -249,12 +250,7 @@ export default function TaskDetailPage() {
       )}
 
       <div className="detail-card">
-        <div className="detail-header">
-          <div className="detail-dot" style={{ '--cat-color': category.color }}>
-            <span>{category.name.charAt(0).toUpperCase()}</span>
-          </div>
-          <h1 className="detail-title">{task.title}</h1>
-        </div>
+        <h1 className="detail-title">{task.title}</h1>
 
         {task.description && (
           <div className="detail-desc">
@@ -355,10 +351,26 @@ export default function TaskDetailPage() {
       </div>
       )}
 
+      {confirmOpen && (
+        <div className="detail-confirm-overlay" onClick={() => setConfirmOpen(false)}>
+          <div className="detail-confirm" onClick={e => e.stopPropagation()}>
+            <h3 className="detail-confirm-title">Danke für deine Hilfe! 🙏</h3>
+            <p className="detail-confirm-text">Damit niemand enttäuscht wird - hast du den Wunsch so wie beschrieben vollständig erfüllt?</p>
+            <div className="detail-confirm-actions">
+              <button className="detail-confirm-cancel" onClick={() => setConfirmOpen(false)}>Abbrechen</button>
+              <button className="detail-confirm-yes" onClick={() => {
+                setConfirmOpen(false)
+                completeMutation.mutate()
+              }}>Ja, erledigt!</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {!completeMutation.isSuccess && (
         <button
           className="detail-fab"
-          onClick={() => completeMutation.mutate()}
+          onClick={() => setConfirmOpen(true)}
           disabled={completeMutation.isPending}
         >
           <Check size={28} />

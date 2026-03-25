@@ -186,6 +186,33 @@
     cursor: pointer;
   }
 
+  &-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-confirm {
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+  }
+
+  &-confirm-actions {
+    display: flex;
+    gap: @spacing-3;
+    margin-top: @spacing-5;
+  }
+
+  &-confirm-cancel, &-confirm-yes {
+    flex: 1;
+    cursor: pointer;
+    min-height: 48px;
+  }
+
   &-fab {
     position: fixed;
     bottom: calc(@spacing-4 + 56px + env(safe-area-inset-bottom));

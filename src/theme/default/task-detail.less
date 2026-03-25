@@ -96,6 +96,32 @@
     padding: @spacing-2 @spacing-6; margin-top: @spacing-4;
   }
 
+  // Confirm Dialog
+  &-confirm-overlay { background: fade(black, 50%); backdrop-filter: blur(4px); }
+
+  &-confirm {
+    background: white; border-radius: @radius-2xl; padding: @spacing-8 @spacing-6;
+    box-shadow: @shadow-lg;
+  }
+
+  &-confirm-title {
+    font-size: @font-size-xl; font-weight: 700; color: @gray-900; margin-bottom: @spacing-5;
+  }
+
+  &-confirm-text {
+    font-size: @font-size-sm; font-weight: 400; color: @gray-500; line-height: 1.5;
+  }
+
+  &-confirm-cancel {
+    background: @gray-100; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 500; color: @gray-500;
+  }
+
+  &-confirm-yes {
+    background: @color-success; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 600; color: white;
+  }
+
   // FAB
   &-fab {
     border-radius: @radius-full; background: @gray-800; color: white;
