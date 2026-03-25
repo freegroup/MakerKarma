@@ -1,10 +1,22 @@
 @import './variables.less';
 
 body {
-  background: #f5f3f0;
+  background: linear-gradient(160deg, #f9a8b8 0%, #f4766b 30%, #e8a87c 70%, #f9c4aa 100%);
   color: @gray-800;
   font-family: @font-stack;
   min-height: 100vh;
+}
+
+.content {
+  background: #f5f3f0;
+  border-radius: 3rem 3rem 0 0;
+  min-height: calc(100vh - @navbar-height);
+}
+
+.page-content {
+  background: #f5f3f0;
+  border-radius: 3rem 3rem 0 0;
+  min-height: calc(100vh - @navbar-height);
 }
 
 .bottomnav {

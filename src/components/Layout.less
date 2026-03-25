@@ -1,20 +1,19 @@
 @import '../theme/default/variables.less';
 
 .layout {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
-  max-width: @content-max-width;
   width: 100%;
-  margin: 0 auto;
-  padding-top: @spacing-6;
-  padding-left: @spacing-4;
-  padding-right: @spacing-4;
-  padding-bottom: calc(100px + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2.5rem 3rem;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
 }
 
 .bottomnav {
