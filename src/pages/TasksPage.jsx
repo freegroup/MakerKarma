@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../store/authStore'
 import IssueListItem from '../components/IssueListItem'
+import PageHeader from '../components/PageHeader'
 import { Plus, X } from 'lucide-react'
 import './TasksPage.less'
 
@@ -60,7 +61,10 @@ export default function TasksPage() {
 
   return (
     <div className="tasks">
-      <h2 className="tasks-title">Karma sammeln</h2>
+      <PageHeader
+        title="Verbessere dein Karma"
+        subtitle="Erledige eine Aufgabe und verbessere dein Maker Karma"
+      />
 
       {categories.length > 0 && (
         <div className="tasks-filters">

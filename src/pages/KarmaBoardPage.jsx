@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import PageHeader from '../components/PageHeader'
 import './KarmaBoardPage.less'
 
 async function fetchPoints() {
@@ -44,7 +45,10 @@ export default function KarmaBoardPage() {
 
   return (
     <div className="admin">
-      <h2 className="admin-title">Karma Board</h2>
+      <PageHeader
+        title="Karma Board"
+        subtitle="Gemeinsam machen wir unseren Space ein bisschen besser"
+      />
 
       <div className="admin-month-nav">
         <button onClick={() => setMonth(m => shiftMonth(m, -1))}><ChevronLeft size={20} /></button>

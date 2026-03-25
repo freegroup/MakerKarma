@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore, apiFetch } from '../store/authStore'
 import { Star, LogOut } from 'lucide-react'
+import PageHeader from '../components/PageHeader'
 import './ProfilePage.less'
 
 async function fetchProfile() {
@@ -21,6 +22,10 @@ export default function ProfilePage() {
 
   return (
     <div className="profile">
+      <PageHeader
+        title="Mein aktuelles Karma"
+        subtitle="Jede Hilfe zählt und wird belohnt — mit Karma und Vergünstigungen für dich"
+      />
       <div className="profile-card">
         {displayUser?.avatarUrl && (
           <img className="profile-avatar" src={displayUser.avatarUrl} alt="" />
