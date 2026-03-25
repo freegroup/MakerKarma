@@ -8,10 +8,11 @@ import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
 import confetti from 'canvas-confetti'
 import QRCode from 'qrcode'
+import { generateQRPdf } from '../utils/printQR'
 import greetings from '../greetings.json'
 import karmaMotivation from '../greetings-karma.json'
 import CategoryTag from '../components/CategoryTag'
-import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2 } from 'lucide-react'
+import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2, Printer } from 'lucide-react'
 import './TaskDetailPage.less'
 
 async function fetchCategories() {
@@ -223,6 +224,12 @@ export default function TaskDetailPage() {
             </button>
             <button className="detail-share-option" onClick={handleCopyLink}>
               <Link2 size={20} /> Link kopieren
+            </button>
+            <button className="detail-share-option" onClick={() => {
+              generateQRPdf(task, deepLink)
+              setShareOpen(false)
+            }}>
+              <Printer size={20} /> QR-Code drucken (A4)
             </button>
             <button className="detail-share-cancel" onClick={() => setShareOpen(false)}>
               Abbrechen
