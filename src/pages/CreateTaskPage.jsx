@@ -9,6 +9,7 @@ import greetings from '../greetings-post.json'
 import AppHeader from '../components/AppHeader'
 import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
+import PageHeader from '../components/PageHeader'
 import './CreateTaskPage.less'
 
 async function fetchCategories() {
@@ -115,7 +116,10 @@ export default function CreateTaskPage() {
       )}
 
       <div className="create">
-      <h2 className="create-title">Wunsch an die Community</h2>
+      <PageHeader
+        title="Wunsch an die Community"
+        subtitle="Beschreib was du dir wünschst — jemand wird sich bestimmt darum kümmern"
+      />
 
       <form className="create-form" onSubmit={handleSubmit}>
         <input
