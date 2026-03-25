@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { apiFetch } from '../store/authStore'
 import IssueListItem from '../components/IssueListItem'
 import PageHeader from '../components/PageHeader'
+import CategoryTag from '../components/CategoryTag'
 import { Plus, X } from 'lucide-react'
 import './TasksPage.less'
 
@@ -63,20 +64,19 @@ export default function TasksPage() {
     <div className="tasks">
       <PageHeader
         title="Verbessere dein Karma"
-        subtitle="Erledige eine Aufgabe und verbessere dein Maker Karma"
+        subtitle="Erfülle einen Wunsch der unten aufgeführt ist und markiere ihn als erledigt - dafür bekommst du Karma Punkte"
       />
 
       {categories.length > 0 && (
         <div className="tasks-filters">
           {categories.map((cat) => (
-            <button
+            <CategoryTag
               key={cat.key}
-              className={`tasks-filter ${activeFilters.has(cat.key) ? 'active' : ''}`}
-              style={{ '--cat-color': cat.color }}
+              name={cat.name}
+              color={cat.color}
+              active={activeFilters.has(cat.key)}
               onClick={() => toggleFilter(cat.key)}
-            >
-              {cat.name}
-            </button>
+            />
           ))}
           {activeFilters.size > 0 && (
             <button

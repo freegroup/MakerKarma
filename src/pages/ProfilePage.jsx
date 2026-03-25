@@ -24,7 +24,7 @@ export default function ProfilePage() {
     <div className="profile">
       <PageHeader
         title="Mein aktuelles Karma"
-        subtitle="Jede Hilfe zählt und wird belohnt — mit Karma und Vergünstigungen für dich"
+        subtitle="Jede Hilfe zählt und wird belohnt - mit Karma und Vergünstigungen für dich"
       />
       <div className="profile-card">
         {displayUser?.avatarUrl && (

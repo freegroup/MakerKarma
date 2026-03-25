@@ -6,16 +6,27 @@
   padding: 2rem 0 1.5rem;
 
   &-back {
-    background: none;
-    border: none;
+    background: fade(white, 45%);
+    backdrop-filter: blur(12px);
+    border: 1px solid fade(white, 50%);
+    border-radius: @radius-full;
     color: @gray-900;
+    width: 40px;
+    height: 40px;
   }
 
   &-right button {
-    background: none;
-    border: none;
+    background: fade(white, 45%);
+    backdrop-filter: blur(12px);
+    border: 1px solid fade(white, 50%);
+    border-radius: @radius-full;
     color: @gray-900;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &-center {

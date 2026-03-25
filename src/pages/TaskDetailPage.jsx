@@ -10,6 +10,7 @@ import confetti from 'canvas-confetti'
 import QRCode from 'qrcode'
 import greetings from '../greetings.json'
 import karmaMotivation from '../greetings-karma.json'
+import CategoryTag from '../components/CategoryTag'
 import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2 } from 'lucide-react'
 import './TaskDetailPage.less'
 
@@ -256,18 +257,18 @@ export default function TaskDetailPage() {
 
         <div className="detail-categories">
           {categories.map((cat) => (
-            <button
+            <CategoryTag
               key={cat.key}
-              className={`detail-cat ${task.category === cat.key ? 'active' : ''} ${pendingCategory === cat.key ? 'pending' : ''}`}
-              style={{ '--cat-color': cat.color }}
+              name={cat.name}
+              color={cat.color}
+              active={task.category === cat.key}
+              pending={pendingCategory === cat.key}
               disabled={!!pendingCategory}
               onClick={() => {
                 if (task.category === cat.key || pendingCategory) return
                 updateCategory({ category: cat.key })
               }}
-            >
-              {cat.name}
-            </button>
+            />
           ))}
         </div>
 

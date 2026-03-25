@@ -59,9 +59,10 @@
 
   &-submit {
     background: @brand-primary; color: white; border: none;
-    font-size: @font-size-lg; font-weight: 700; padding: @spacing-5 @spacing-6;
-    box-shadow: 0 -2px 10px fade(black, 10%);
+    font-size: @font-size-lg; font-weight: 600; padding: @spacing-5 @spacing-6;
+    box-shadow: 0 -2px 12px fade(@brand-primary, 20%);
     &:hover { background: @primary-700; }
+    &:disabled { background: @gray-300; color: @gray-500; box-shadow: none; }
   }
 
   &-error { color: @color-error; font-size: @font-size-sm; }

@@ -1,7 +1,6 @@
 @import '../theme/default/variables.less';
 
 .create {
-  max-width: 480px;
   margin: 0 auto;
 
   &-back {
@@ -145,6 +144,10 @@
     right: 0;
     width: 100%;
     min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: @spacing-2;
     cursor: pointer;
     transition: background 0.15s;
     z-index: 10;

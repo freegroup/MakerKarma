@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import { CATEGORIES } from '../types'
-import { ArrowLeft, Camera, X } from 'lucide-react'
+import { ArrowLeft, Camera, X, Send } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import greetings from '../greetings-post.json'
 import AppHeader from '../components/AppHeader'
 import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
 import PageHeader from '../components/PageHeader'
+import CategoryTag from '../components/CategoryTag'
 import './CreateTaskPage.less'
 
 async function fetchCategories() {
@@ -118,7 +119,7 @@ export default function CreateTaskPage() {
       <div className="create">
       <PageHeader
         title="Wunsch an die Community"
-        subtitle="Beschreib was du dir wünschst — jemand wird sich bestimmt darum kümmern"
+        subtitle="Jemand wird deinen Wunsch bestimmt erhören und sich dessen annehmen"
       />
 
       <form className="create-form" onSubmit={handleSubmit}>
@@ -143,15 +144,13 @@ export default function CreateTaskPage() {
           <label>Kategorie</label>
           <div className="create-categories">
             {categories.map((cat) => (
-              <button
+              <CategoryTag
                 key={cat.key}
-                type="button"
-                className={`create-cat ${category === cat.key ? 'active' : ''}`}
-                style={{ '--cat-color': cat.color }}
+                name={cat.name}
+                color={cat.color}
+                active={category === cat.key}
                 onClick={() => setCategory(cat.key)}
-              >
-                {cat.icon} {cat.name}
-              </button>
+              />
             ))}
           </div>
         </div>
@@ -178,7 +177,7 @@ export default function CreateTaskPage() {
           </div>
           <div className="create-toggle-label">
             <span>Wiederkehrend</span>
-            <span className="create-toggle-hint">Bleibt offen — kann immer wieder erledigt werden</span>
+            <span className="create-toggle-hint">Bleibt offen - kann immer wieder erledigt werden</span>
           </div>
         </div>
 
@@ -211,7 +210,7 @@ export default function CreateTaskPage() {
           type="submit"
           disabled={!title.trim() || mutation.isPending}
         >
-          {mutation.isPending ? 'Wird gepostet...' : 'An Community senden'}
+          {mutation.isPending ? 'Wird gepostet...' : <><Send size={20} /> An Community senden</>}
         </button>
 
         {mutation.isError && (

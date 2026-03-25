@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom'
-import { Compass, User, Trophy } from 'lucide-react'
+import { Compass, User, Trophy, Heart } from 'lucide-react'
 import AppHeader from './AppHeader'
 import './Layout.less'
 
@@ -14,8 +14,8 @@ export default function Layout() {
 
       <nav className="bottomnav">
         <NavLink to="/" end className="bottomnav-item">
-          <Compass size={26} />
-          <span>Entdecken</span>
+          <Heart size={26} />
+          <span>Wünsche</span>
         </NavLink>
         <NavLink to="/board" className="bottomnav-item">
           <Trophy size={26} />

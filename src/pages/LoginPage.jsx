@@ -13,8 +13,8 @@ function getErrorFromURL() {
 }
 
 const ERROR_MESSAGES = {
-  not_allowed: 'Kein Zugang — du bist nicht als Mitglied registriert.',
-  no_code: 'Anmeldung fehlgeschlagen — kein Code von GitHub erhalten.',
+  not_allowed: 'Kein Zugang - du bist nicht als Mitglied registriert.',
+  no_code: 'Anmeldung fehlgeschlagen - kein Code von GitHub erhalten.',
   token_exchange_failed: 'Token-Tausch mit GitHub fehlgeschlagen.',
   profile_failed: 'GitHub-Profil konnte nicht geladen werden.',
 }
