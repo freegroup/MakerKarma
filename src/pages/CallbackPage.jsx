@@ -21,9 +21,9 @@ export default function CallbackPage() {
   }, [])
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+    <div className="callback">
       {error ? (
-        <p style={{ color: '#ef4444' }}>{error}</p>
+        <p className="callback-error">{error}</p>
       ) : (
         <p>Anmeldung wird verarbeitet...</p>
       )}

@@ -16,7 +16,19 @@
   }
 
   &-left { justify-content: flex-start; padding-left: @spacing-2; }
-  &-right { justify-content: flex-end; padding-right: @spacing-2; }
+  &-right {
+    justify-content: flex-end;
+    padding-right: @spacing-2;
+
+    button {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
 
   &-back {
     width: 48px;

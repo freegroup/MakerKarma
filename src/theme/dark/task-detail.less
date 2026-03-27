@@ -1,0 +1,177 @@
+
+.detail {
+  &-back { background: none; border: none; color: @color-text-muted; font-size: @font-size-sm; }
+
+  // Fact Sheet Card
+  &-card {
+    background: @color-bg-card;
+    border-radius: @radius-2xl;
+    padding: @spacing-5 @spacing-6 @spacing-3;
+    box-shadow: 0 1px 4px fade(black, 15%);
+    margin-bottom: @spacing-4;
+  }
+
+  &-dot {
+    border-radius: @radius-full;
+    background: linear-gradient(135deg, var(--cat-color), fade(black, 15%));
+
+    span {
+      color: @color-text-inverse;
+      font-size: @font-size-xl;
+      font-weight: 800;
+    }
+  }
+
+  &-category-name { font-size: @font-size-xs; color: @color-text-muted; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  &-title { font-size: @font-size-xl; font-weight: 700; color: fade(@color-text-primary, 55%); }
+
+  &-cat {
+    border-radius: @radius-full; background: @color-border-light;
+    font-size: @font-size-xs; font-weight: 500; color: @color-text-muted;
+    padding: @spacing-1 @spacing-3; border: none;
+
+    &.active {
+      background: var(--cat-color); color: @color-text-inverse;
+    }
+
+    &.pending {
+      background: var(--cat-color); color: @color-text-inverse;
+      animation: cat-pulse 0.8s ease infinite;
+    }
+
+    &:disabled { cursor: default; }
+  }
+
+  &-footer {
+    border-top: 1px solid @color-border-light;
+    padding-top: @spacing-3;
+    margin-top: @spacing-2;
+  }
+
+  &-footer-karma { color: @color-warning; font-size: @font-size-xs; }
+  &-footer-tag { color: @color-text-muted; font-size: @font-size-xs; }
+  &-footer-date { color: @color-text-muted; font-size: @font-size-xs; }
+
+  &-my-votes {
+    font-size: @font-size-sm;
+    color: @brand-accent;
+    font-weight: 600;
+    margin-top: @spacing-2;
+  }
+
+  &-vote-stepper { margin-top: @spacing-4; }
+  &-vote-available { margin-top: @spacing-2; }
+
+  &-desc {
+    color: @color-text-secondary; font-size: @font-size-sm; line-height: 1.6;
+    img { border-radius: @radius-lg; }
+    a { color: @brand-primary; }
+  }
+
+  &-info-qr {
+    font-size: @font-size-sm; color: @brand-primary; background: none; border: none; font-weight: 500;
+  }
+
+  // Share Bottom Sheet
+  &-share-overlay { background: fade(black, 50%); }
+
+  &-share-sheet {
+    background: @color-bg-card; border-radius: @radius-2xl @radius-2xl 0 0;
+    padding: @spacing-4 @spacing-6 @spacing-8;
+    box-shadow: 0 -4px 20px fade(black, 25%);
+  }
+
+  &-share-handle { background: @color-text-muted; border-radius: @radius-full; margin-bottom: @spacing-4; }
+  &-share-title { font-size: @font-size-lg; font-weight: 700; color: fade(@color-text-primary, 55%); margin-bottom: @spacing-4; }
+
+  &-share-option {
+    background: none; border: none; border-bottom: 1px solid @color-border-light;
+    font-size: @font-size-base; font-weight: 500; color: @color-text-secondary; padding: @spacing-4 0;
+    &:last-of-type { border-bottom: none; }
+  }
+
+  &-share-cancel {
+    background: @color-border-light; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 600; color: @color-text-muted;
+    padding: @spacing-3; margin-top: @spacing-4;
+  }
+
+  // QR Code
+  &-qr-card { background: @color-bg-card; border-radius: @radius-2xl; padding: @spacing-8; box-shadow: @shadow-lg; }
+  &-qr-hint { font-size: @font-size-sm; color: @color-text-muted; margin-top: @spacing-3; }
+  &-qr-close {
+    background: @color-border-light; border: none; border-radius: @radius-full;
+    font-size: @font-size-sm; font-weight: 600; color: @color-text-secondary;
+    padding: @spacing-2 @spacing-6; margin-top: @spacing-4;
+  }
+
+  // Confirm Dialog
+  &-confirm-overlay { background: fade(black, 60%); backdrop-filter: blur(4px); }
+
+  &-confirm {
+    background: @color-bg-card; border-radius: @radius-2xl; padding: @spacing-8 @spacing-6;
+    box-shadow: @shadow-lg;
+  }
+
+  &-confirm-title {
+    font-size: @font-size-xl; font-weight: 700; color: fade(@color-text-primary, 55%); margin-bottom: @spacing-5;
+  }
+
+  &-confirm-text {
+    font-size: @font-size-sm; font-weight: 400; color: @color-text-muted; line-height: 1.5;
+  }
+
+  &-confirm-cancel {
+    background: @color-border-light; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 500; color: @color-text-muted;
+  }
+
+  &-confirm-yes {
+    background: @color-success; border: none; border-radius: @radius-xl;
+    font-size: @font-size-base; font-weight: 600; color: @color-text-inverse;
+  }
+
+  // FAB
+  &-fab {
+    border-radius: @radius-full; background: @color-text-primary; color: @color-bg-content;
+    border: none; box-shadow: 0 4px 14px fade(black, 30%);
+    &:hover { background: @color-text-secondary; }
+  }
+
+  &-error-msg { color: @color-error; }
+
+  // Chat
+  &-chat-bubble {
+    background: @color-bg-card; border-radius: @radius-xl;
+    font-size: @font-size-sm; padding: @spacing-3 @spacing-4;
+    box-shadow: 0 1px 3px fade(black, 15%);
+    img { border-radius: @radius-md; }
+  }
+
+  &-chat-msg--done &-chat-bubble {
+    background: @color-bg-card-hover;
+    border-left: none;
+  }
+
+  &-chat-time { font-size: @font-size-xs; color: @color-text-muted; display: block; text-align: right; margin-top: @spacing-1; }
+
+  &-chat-input {
+    background: @color-bg-card; border-top: 1px solid @color-border-light; padding: @spacing-3 @spacing-4;
+  }
+  &-chat-photo { background: none; border: none; color: @color-text-muted; &:hover { color: @color-text-secondary; } }
+
+  &-chat-text {
+    border: 1px solid @color-border-medium; border-radius: @radius-full;
+    font-size: @font-size-base; padding: @spacing-3 @spacing-4;
+    background: @color-bg-content; color: @color-text-primary;
+    &:focus { border-color: @color-text-muted; }
+  }
+
+  &-chat-send { background: @color-text-primary; color: @color-bg-content; border: none; border-radius: @radius-full; }
+  &-chat-preview button { border-radius: @radius-full; background: @overlay-dark; color: @color-text-inverse; border: none; font-size: @font-size-xs; }
+
+  // History
+  &-history h3 { font-size: @font-size-sm; font-weight: 600; color: @color-text-muted; }
+  &-history-item { border-bottom: 1px solid @color-border-light; font-size: @font-size-sm; color: @color-text-secondary; padding: @spacing-2 0; }
+  &-history-date { color: @color-text-muted; }
+}

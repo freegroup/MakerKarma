@@ -1,0 +1,77 @@
+// MakerKarma - Dark Theme Colors
+// Überschreibt die Light-Farben aus default/colors.less
+// Farbfamilie: Teal/Cyan (inspiriert vom Aurora-Gradient)
+
+// === TINT COLORS ===
+@tint-primary: #5eb8b8;
+@tint-accent: #3a9a9a;
+@tint-success: #34d399;
+@tint-warning: #fbbf24;
+@tint-error: #f87171;
+
+// === BACKGROUND ===
+@color-bg-body: radial-gradient(ellipse at 30% 0%, #b8e8e8 0%, #5eb8b8 25%, #1a7a8a 45%, #0d3a4a 70%, #091520 100%);
+@color-bg-content: #0d1a22;
+@color-bg-card: #122430;
+@color-bg-card-hover: #1a303e;
+
+// === TEXT ===
+@color-text-primary: #dceef0;
+@color-text-secondary: #8ab8be;
+@color-text-muted: #4a7a82;
+@color-text-inverse: #091520;
+@color-text-heading: #b8e8e8;
+
+// === BORDERS ===
+@color-border-light: #1a303e;
+@color-border-medium: #244050;
+@color-border-card: @color-text-heading;
+
+// === GLASS EFFECT ===
+@glass-bg: fade(#122430, 40%);
+@glass-border: @color-text-heading;
+
+// === BOTTOM NAV ===
+@nav-bg: #06101a;
+@nav-text: fade(@color-text-heading, 60%);
+@nav-text-active: white;
+@nav-active-gradient: linear-gradient(135deg, #1a7a8a, #5eb8b8);
+@nav-active-shadow: fade(#1a7a8a, 30%);
+
+// === LOGIN / BLOBS ===
+@blob-gradient: radial-gradient(ellipse at 50% 30%, #b8e8e8 0%, #5eb8b8 30%, #1a7a8a 60%, #0d3a4a 100%);
+@blob-accent: #3a9a9a;
+@login-card-bg: fade(#122430, 85%);
+
+// === BLOB BACKGROUND COLORS ===
+@blob-color-1: #5eb8b8;
+@blob-color-2: #3a9a9a;
+@blob-color-3: #1a7a8a;
+@blob-color-4: #b8e8e8;
+@blob-color-5: #4aaa9a;
+@blob-color-6: #2a8a8a;
+
+// === SHADOWS ===
+@shadow-card: 0 1px 4px fade(black, 20%);
+
+// === SPINNER ===
+@spinner-bg: fade(white, 10%);
+@spinner-color: #4a7a82;
+
+// === ICONS ===
+@icon-stroke-width: 1.5;
+
+// === GRAY OVERRIDES (Teal-getönt) ===
+@gray-50: #1a303e;
+@gray-100: #1a303e;
+@gray-200: #244050;
+@gray-300: #305060;
+@gray-400: #4a7a82;
+@gray-500: #6a9a9e;
+@gray-600: #8ab8be;
+@gray-700: #a8d0d4;
+@gray-800: #c8e4e6;
+@gray-900: #dceef0;
+
+// Shadow overrides
+@shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);

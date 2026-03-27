@@ -1,18 +1,17 @@
-@import './variables.less';
 
 .voting {
-  &-loading { color: @gray-600; }
-  &-empty { color: @gray-500; font-size: @font-size-sm; }
+  &-loading { color: @color-text-secondary; }
+  &-empty { color: @color-text-muted; font-size: @font-size-sm; }
 
   &-balance {
-    background: @primary-50;
+    background: fade(@tint-primary, 10%);
     border-radius: @radius-xl;
     padding: @spacing-3 @spacing-4;
     margin-bottom: @spacing-4;
 
     &-label {
       font-size: @font-size-sm;
-      color: @gray-600;
+      color: @color-text-secondary;
     }
 
     &-value {
@@ -23,21 +22,21 @@
   }
 
   &-card {
-    background: white;
+    background: @color-bg-card;
     border-radius: @radius-xl;
-    box-shadow: 0 1px 4px fade(black, 5%);
+    box-shadow: 0 1px 4px fade(black, 15%);
     padding: @spacing-3 @spacing-4;
     border-left: 1px solid @brand-accent;
 
     &-title {
       font-size: @font-size-base;
       font-weight: 600;
-      color: @gray-800;
+      color: fade(@color-text-primary, 55%);
     }
 
     &-desc {
       font-size: @font-size-sm;
-      color: @gray-400;
+      color: @color-text-muted;
     }
 
     &-stats {
@@ -51,7 +50,7 @@
 
     &-meta {
       font-size: @font-size-xs;
-      color: @gray-400;
+      color: @color-text-muted;
     }
 
     &-my {
@@ -64,9 +63,9 @@
         width: 36px;
         height: 36px;
         border-radius: @radius-full;
-        border: 1.5px solid @gray-200;
-        background: white;
-        color: @gray-600;
+        border: 1.5px solid @color-border-medium;
+        background: @color-bg-card;
+        color: @color-text-secondary;
         cursor: pointer;
 
         &:disabled {
@@ -82,9 +81,9 @@
         min-width: 3rem;
         width: 4rem;
         text-align: center;
-        border: 1.5px solid @gray-200;
+        border: 1.5px solid @color-border-medium;
         border-radius: @radius-lg;
-        background: white;
+        background: @color-bg-card;
         padding: @spacing-1;
         -moz-appearance: textfield;
 
@@ -102,12 +101,12 @@
     }
 
     &-cancel {
-      background: @gray-100;
+      background: @color-border-light;
       border: none;
       border-radius: @radius-lg;
       padding: @spacing-2 @spacing-3;
       font-size: @font-size-sm;
-      color: @gray-600;
+      color: @color-text-secondary;
     }
 
     &-confirm {
@@ -132,8 +131,8 @@
       font-weight: 600;
 
       &:disabled {
-        background: @gray-200;
-        color: @gray-400;
+        background: @color-border-medium;
+        color: @color-text-muted;
       }
     }
 

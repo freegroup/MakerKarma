@@ -18,7 +18,7 @@ export default function IssueListItem({ task }) {
     staleTime: 1000 * 60 * 30,
   })
 
-  const category = categories.find(c => c.key === task.category) || { name: task.category || '', color: '#6B7280' }
+  const category = categories.find(c => c.key === task.category) || { name: task.category || '', color: 'var(--color-text-muted)' }
 
   return (
     <div

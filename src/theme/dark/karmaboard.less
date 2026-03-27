@@ -1,0 +1,84 @@
+
+.admin {
+  &-title {
+    font-size: @font-size-xl;
+    font-weight: 700;
+    color: @color-text-primary;
+    margin-bottom: @spacing-4;
+  }
+
+  &-month-nav {
+    margin-bottom: @spacing-4;
+
+    button {
+      background: none;
+      border: none;
+      color: @color-text-muted;
+      padding: @spacing-1;
+    }
+  }
+
+  &-month {
+    font-size: @font-size-lg;
+    font-weight: 600;
+  }
+
+  &-summary {
+    margin-bottom: @spacing-6;
+
+    &-item {
+      background: @color-bg-card;
+      border-radius: @radius-xl;
+      padding: @spacing-4;
+      box-shadow: @shadow-sm;
+    }
+
+    &-value {
+      font-size: @font-size-2xl;
+      font-weight: 800;
+      color: @color-text-primary;
+    }
+
+    &-label {
+      font-size: @font-size-xs;
+      color: @color-text-muted;
+    }
+  }
+
+  &-loading {
+    padding: @spacing-8;
+  }
+
+  &-empty {
+    color: @color-text-muted;
+    padding: @spacing-8;
+  }
+
+  &-row {
+    background: @color-bg-card;
+    border-radius: @radius-xl;
+    padding: @spacing-3 @spacing-4;
+    box-shadow: @shadow-sm;
+
+    &-rank {
+      font-size: @font-size-sm;
+      font-weight: 700;
+      color: @color-text-muted;
+    }
+
+    &-name {
+      font-weight: 600;
+      color: @color-text-primary;
+    }
+
+    &-tasks {
+      font-size: @font-size-xs;
+      color: @color-text-muted;
+    }
+
+    &-points {
+      font-weight: 700;
+      color: @color-warning;
+    }
+  }
+}

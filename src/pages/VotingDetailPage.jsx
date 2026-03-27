@@ -253,7 +253,7 @@ export default function VotingDetailPage() {
           <div className="detail-confirm" onClick={e => e.stopPropagation()}>
             <h3 className="detail-confirm-title">Karma einsetzen</h3>
             <p className="detail-confirm-text">Wie viele Karma-Punkte möchtest du für dieses Projekt einsetzen?</p>
-            <div className="voting-card-stepper" style={{ marginTop: '1rem' }}>
+            <div className="voting-card-stepper detail-vote-stepper">
               <button
                 className="voting-card-stepper-btn"
                 onClick={() => setVotePoints(p => Math.max(1, p - 1))}
@@ -282,7 +282,7 @@ export default function VotingDetailPage() {
                 <Plus size={16} />
               </button>
             </div>
-            <p className="detail-confirm-text" style={{ marginTop: '0.5rem' }}>
+            <p className="detail-confirm-text detail-vote-available">
               Verfügbar: {availablePoints}
             </p>
             {voteMutation.isError && (

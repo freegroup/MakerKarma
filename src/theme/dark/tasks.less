@@ -1,0 +1,32 @@
+
+.tasks {
+  &-loading { color: @color-text-secondary; }
+  &-error { color: @color-error; }
+  &-empty { color: @color-text-muted; font-size: @font-size-sm; }
+
+  &-filter {
+    border: 1.5px solid var(--cat-color); border-radius: @radius-full;
+    background: transparent;
+    font-size: @font-size-xs; font-weight: 500; color: @color-text-muted;
+    padding: @spacing-1 @spacing-3;
+
+    &.active {
+      background: var(--cat-color); color: white; border-color: var(--cat-color);
+    }
+  }
+
+  &-filter-clear {
+    background: none; border: none;
+    font-size: @font-size-xs; font-weight: 500; color: @color-text-muted;
+  }
+
+  &-fab {
+    border-radius: @radius-full;
+    background: @color-bg-card;
+    color: @color-text-heading;
+    border: 1px solid @color-border-medium;
+    box-shadow: 0 4px 14px fade(black, 30%);
+
+    &:hover { background: @color-bg-card-hover; }
+  }
+}

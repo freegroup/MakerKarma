@@ -203,7 +203,7 @@ export default function TaskDetailPage() {
     return <div className="detail-error">Nicht gefunden.</div>
   }
 
-  const category = categories.find(c => c.key === task?.category) || { icon: '📋', name: task?.category || '', color: '#6B7280' }
+  const category = categories.find(c => c.key === task?.category) || { icon: '', name: task?.category || '', color: 'var(--color-text-muted)' }
 
   return (
     <PageLayout showBack right={

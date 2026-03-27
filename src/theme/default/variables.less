@@ -2,24 +2,7 @@
 // Hier werden ALLE Design-Tokens definiert.
 // Die Klassen-Mappings importieren diese Datei.
 
-// Brand Colors
-@brand-primary: #3b82f6;
-@brand-secondary: #10b981;
-@brand-accent: #8b5cf6;
-
-// Primary Scale
-@primary-50: #eff6ff;
-@primary-100: #dbeafe;
-@primary-200: #bfdbfe;
-@primary-300: #93c5fd;
-@primary-400: #60a5fa;
-@primary-500: @brand-primary;
-@primary-600: #2563eb;
-@primary-700: #1d4ed8;
-@primary-800: #1e40af;
-@primary-900: #1e3a8a;
-
-// Gray Scale
+// Gray Scale (nicht theme-spezifisch, gleich in light + dark)
 @gray-50: #f9fafb;
 @gray-100: #f3f4f6;
 @gray-200: #e5e7eb;
@@ -31,11 +14,29 @@
 @gray-800: #1f2937;
 @gray-900: #111827;
 
-// Semantic Colors
-@color-success: #10b981;
-@color-warning: #f59e0b;
-@color-error: #ef4444;
-@color-info: #3b82f6;
+// Theme Colors (tints, backgrounds, text, glass, nav, blobs, shadows)
+@import './colors.less';
+
+// Aliases (für Abwärtskompatibilität in bestehenden Theme-Files)
+@brand-primary: @tint-primary;
+@brand-secondary: @tint-success;
+@brand-accent: @tint-accent;
+@color-success: @tint-success;
+@color-warning: @tint-warning;
+@color-error: @tint-error;
+@color-info: @tint-primary;
+
+// Primary Scale
+@primary-50: #eff6ff;
+@primary-100: #dbeafe;
+@primary-200: #bfdbfe;
+@primary-300: #93c5fd;
+@primary-400: #60a5fa;
+@primary-500: @tint-primary;
+@primary-600: #2563eb;
+@primary-700: #1d4ed8;
+@primary-800: #1e40af;
+@primary-900: #1e3a8a;
 
 // Typography
 @font-stack: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;

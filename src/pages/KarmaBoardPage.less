@@ -1,32 +1,18 @@
 @import '../theme/default/variables.less';
 
 .admin {
-  &-title {
-    font-size: @font-size-xl;
-    font-weight: 700;
-    color: @gray-900;
-    margin-bottom: @spacing-4;
-  }
-
   &-month-nav {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: @spacing-4;
-    margin-bottom: @spacing-4;
 
     button {
-      background: none;
-      border: none;
-      color: @gray-500;
       cursor: pointer;
-      padding: @spacing-1;
     }
   }
 
   &-month {
-    font-size: @font-size-lg;
-    font-weight: 600;
     min-width: 100px;
     text-align: center;
   }
@@ -34,40 +20,24 @@
   &-summary {
     display: flex;
     gap: @spacing-3;
-    margin-bottom: @spacing-6;
 
     &-item {
       flex: 1;
-      background: white;
-      border-radius: @radius-xl;
-      padding: @spacing-4;
       text-align: center;
-      box-shadow: @shadow-sm;
     }
 
     &-value {
       display: block;
-      font-size: @font-size-2xl;
-      font-weight: 800;
-      color: @gray-900;
-    }
-
-    &-label {
-      font-size: @font-size-xs;
-      color: @gray-500;
     }
   }
 
   &-loading {
     display: flex;
     justify-content: center;
-    padding: @spacing-8;
   }
 
   &-empty {
     text-align: center;
-    color: @gray-400;
-    padding: @spacing-8;
   }
 
   &-list {
@@ -80,15 +50,8 @@
     display: flex;
     align-items: center;
     gap: @spacing-3;
-    background: white;
-    border-radius: @radius-xl;
-    padding: @spacing-3 @spacing-4;
-    box-shadow: @shadow-sm;
 
     &-rank {
-      font-size: @font-size-sm;
-      font-weight: 700;
-      color: @gray-400;
       min-width: 28px;
     }
 
@@ -98,21 +61,12 @@
 
     &-name {
       display: block;
-      font-weight: 600;
-      color: @gray-900;
-    }
-
-    &-tasks {
-      font-size: @font-size-xs;
-      color: @gray-500;
     }
 
     &-points {
       display: flex;
       align-items: center;
       gap: @spacing-1;
-      font-weight: 700;
-      color: @color-warning;
     }
   }
 }

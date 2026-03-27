@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from './store/authStore'
+import { useThemeStore } from './store/themeStore'
 import ScrollToTop from './components/ScrollToTop'
 import Layout from './components/Layout'
 import LoginPage from './pages/LoginPage'
@@ -31,6 +32,9 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+  // Apply persisted theme on mount
+  useThemeStore.getState().initTheme()
+
   return (
     <>
     <ScrollToTop />

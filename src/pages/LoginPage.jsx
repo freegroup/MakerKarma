@@ -1,4 +1,6 @@
 import { initiateOAuth } from '../store/authStore'
+import { useThemeStore } from '../store/themeStore'
+import { Sun, Moon } from 'lucide-react'
 import './LoginPage.less'
 
 function getErrorFromURL() {
@@ -21,9 +23,13 @@ const ERROR_MESSAGES = {
 
 export default function LoginPage() {
   const { error, detail } = getErrorFromURL()
+  const { theme, toggleTheme } = useThemeStore()
 
   return (
     <div className="login">
+      <button className="login-theme-toggle" onClick={toggleTheme}>
+        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
       <div className="login-card">
         <h1 className="login-title">Karma Yoga<br /><span>for Maker</span></h1>
         <p className="login-subtitle">Tue Gutes. Sammle Karma.</p>

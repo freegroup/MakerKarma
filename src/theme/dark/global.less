@@ -1,4 +1,3 @@
-@import './variables.less';
 
 html, body {
   height: 100%;
@@ -19,36 +18,38 @@ body {
 }
 
 .content {
-  background: @color-bg-content;
+  background: fade(@color-bg-content, 50%);
   border-radius: 3rem 3rem 0 0;
   min-height: calc(100vh - @navbar-height);
-  border: 3px solid @color-border-card;
+  border: 2px solid @color-border-card;
 }
 
 .page-content {
-  background: @color-bg-content;
+  background: fade(@color-bg-content, 50%);
   border-radius: 3rem 3rem 0 0;
   min-height: calc(100vh - @navbar-height);
-  border: 3px solid @color-border-card;
+  border: 2px solid @color-border-card;
 }
 
 .bottomnav {
   background: @nav-bg;
   border-radius: 0;
-  box-shadow: 0 -2px 12px fade(black, 15%);
+  box-shadow: 0 -3px 20px fade(white, 25%);
 
   &-item {
     color: @nav-text;
     font-size: 10px;
     font-weight: 500;
 
-    svg { stroke-width: @icon-stroke-width; }
+    svg, svg * { stroke-width: @icon-stroke-width; }
 
     &.active {
       color: @nav-text-active;
       background: @nav-active-gradient;
       border-radius: @radius-full;
       box-shadow: 0 4px 16px @nav-active-shadow;
+
+      svg, svg * { stroke-width: 2; }
 
       &::before {
         background: @nav-bg;
