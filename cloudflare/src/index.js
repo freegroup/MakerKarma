@@ -49,7 +49,7 @@ app.get('/auth/github/callback', async (c) => {
     if (c.env.GITHUB_BOT_TOKEN) {
       const { users } = await readUsers(c.env)
       const allowed = users.find(u =>
-        u.email === oauthUser.email || u.id === oauthUser.id
+        u.email?.toLowerCase() === oauthUser.email?.toLowerCase() || u.id === oauthUser.id
       )
 
       if (!allowed) {
