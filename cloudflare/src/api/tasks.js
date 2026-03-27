@@ -20,6 +20,7 @@ export async function listTasks(c) {
     owner,
     repo,
     state: 'open',
+    labels: 'karma',
     per_page: 100,
   })
 

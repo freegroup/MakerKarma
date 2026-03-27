@@ -1,28 +1,18 @@
 import { useState, useRef, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../store/authStore'
 import Markdown from 'react-markdown'
 import AppHeader from '../components/AppHeader'
 import PageLayout from '../components/PageLayout'
 import Toast from '../components/Toast'
-import confetti from 'canvas-confetti'
 import QRCode from 'qrcode'
 import { generateQRPdf } from '../utils/printQR'
-import greetings from '../data/greetings.json'
-import karmaMotivation from '../data/greetings-karma.json'
-import CategoryTag from '../components/CategoryTag'
-import { ArrowLeft, Star, Clock, Check, Send, Camera, QrCode, Share2, Link2, Printer } from 'lucide-react'
+import { ThumbsUp, Minus, Plus, Send, Camera, Share2, QrCode, Link2, Printer } from 'lucide-react'
 import './TaskDetailPage.less'
 
-async function fetchCategories() {
-  const res = await apiFetch('/api/labels/categories')
-  if (!res) return []
-  return res.json()
-}
-
-async function fetchTask(id) {
-  const res = await apiFetch(`/api/tasks/${id}`)
+async function fetchVotingItem(id) {
+  const res = await apiFetch(`/api/voting/${id}`)
   if (!res) return null
   return res.json()
 }
@@ -33,13 +23,9 @@ async function fetchComments(id) {
   return res.json()
 }
 
-async function completeTask(id) {
-  const res = await apiFetch(`/api/tasks/${id}/complete`, { method: 'POST' })
-  if (!res) throw new Error('Fehler')
-  if (!res.ok) {
-    const data = await res.json()
-    throw new Error(data.error || 'Fehler beim Abschließen')
-  }
+async function fetchProfile() {
+  const res = await apiFetch('/api/users/me')
+  if (!res) return null
   return res.json()
 }
 
@@ -71,27 +57,19 @@ function compressImage(file, maxWidth = 800) {
   })
 }
 
-export default function TaskDetailPage() {
+export default function VotingDetailPage() {
   const { id } = useParams()
-  const navigate = useNavigate()
   const queryClient = useQueryClient()
   const fileRef = useRef()
   const [commentText, setCommentText] = useState('')
   const [commentPhoto, setCommentPhoto] = useState(null)
-
-  const { data: categories = [] } = useQuery({
-    queryKey: ['category-labels'],
-    queryFn: fetchCategories,
-    staleTime: 1000 * 60 * 30,
-  })
-
+  const [votePoints, setVotePoints] = useState(1)
+  const [showVoting, setShowVoting] = useState(false)
   const [successMsg, setSuccessMsg] = useState(null)
   const [qrDataUrl, setQrDataUrl] = useState(null)
-  const [confirmOpen, setConfirmOpen] = useState(false)
-
-  const deepLink = `${window.location.origin}${import.meta.env.BASE_URL}tasks/${id}`
-
   const [shareOpen, setShareOpen] = useState(false)
+
+  const deepLink = `${window.location.origin}${import.meta.env.BASE_URL}voting/${id}`
 
   const generateQr = useCallback(async () => {
     const url = await QRCode.toDataURL(deepLink, { width: 300, margin: 2 })
@@ -100,9 +78,7 @@ export default function TaskDetailPage() {
 
   async function handleNativeShare() {
     if (navigator.share) {
-      try {
-        await navigator.share({ title: task?.title, url: deepLink })
-      } catch {}
+      try { await navigator.share({ title: item?.title, url: deepLink }) } catch {}
     }
     setShareOpen(false)
   }
@@ -118,9 +94,9 @@ export default function TaskDetailPage() {
     setShareOpen(false)
   }
 
-  const { data: task, isLoading } = useQuery({
-    queryKey: ['task', id],
-    queryFn: () => fetchTask(id),
+  const { data: item, isLoading } = useQuery({
+    queryKey: ['voting-item', id],
+    queryFn: () => fetchVotingItem(id),
   })
 
   const { data: comments = [] } = useQuery({
@@ -128,37 +104,34 @@ export default function TaskDetailPage() {
     queryFn: () => fetchComments(id),
   })
 
-  const [pendingCategory, setPendingCategory] = useState(null)
-
-  const { mutate: updateCategory } = useMutation({
-    mutationFn: async (data) => {
-      const res = await apiFetch(`/api/tasks/${id}/category`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      })
-      if (!res?.ok) throw new Error('Fehler')
-      return res.json()
-    },
-    onMutate: (data) => setPendingCategory(data.category),
-    onSettled: () => setPendingCategory(null),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['task', id] })
-      queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
-    },
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: fetchProfile,
   })
 
-  const completeMutation = useMutation({
-    mutationFn: () => completeTask(id),
+  const availablePoints = profile?.availablePoints ?? 0
+
+  const voteMutation = useMutation({
+    mutationFn: async ({ points }) => {
+      const res = await apiFetch(`/api/voting/${id}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points }),
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Vote fehlgeschlagen')
+      }
+      return res.json()
+    },
     onSuccess: () => {
-      const msg = greetings[Math.floor(Math.random() * greetings.length)]
-      setSuccessMsg(msg)
-      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } })
-      queryClient.invalidateQueries({ queryKey: ['tasks'] })
-      queryClient.invalidateQueries({ queryKey: ['task', id] })
-      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
+      queryClient.invalidateQueries({ queryKey: ['voting-item', id] })
+      queryClient.invalidateQueries({ queryKey: ['voting-items'] })
       queryClient.invalidateQueries({ queryKey: ['profile'] })
-      queryClient.invalidateQueries({ queryKey: ['admin-points'] })
+      queryClient.invalidateQueries({ queryKey: ['task-comments', id] })
+      setShowVoting(false)
+      setVotePoints(1)
+      setSuccessMsg('Danke für dein Karma!')
     },
   })
 
@@ -197,11 +170,9 @@ export default function TaskDetailPage() {
     return <div className="detail-loading"><div className="spinner" /></div>
   }
 
-  if (!task) {
+  if (!item) {
     return <div className="detail-error">Nicht gefunden.</div>
   }
-
-  const category = categories.find(c => c.key === task?.category) || { icon: '📋', name: task?.category || '', color: '#6B7280' }
 
   return (
     <PageLayout showBack right={
@@ -227,7 +198,7 @@ export default function TaskDetailPage() {
               <Link2 size={20} /> Link kopieren
             </button>
             <button className="detail-share-option" onClick={() => {
-              generateQRPdf(task, deepLink)
+              generateQRPdf(item, deepLink)
               setShareOpen(false)
             }}>
               <Printer size={20} /> QR-Code drucken (A4)
@@ -250,48 +221,86 @@ export default function TaskDetailPage() {
       )}
 
       <div className="detail-card">
-        <h1 className="detail-title">{task.title}</h1>
+        <h1 className="detail-title">{item.title}</h1>
 
-        {task.description && (
+        {item.description && (
           <div className="detail-desc">
-            <Markdown>{task.description}</Markdown>
+            <Markdown>{item.description}</Markdown>
           </div>
         )}
 
-        <div className="detail-categories">
-          {categories.map((cat) => (
-            <CategoryTag
-              key={cat.key}
-              name={cat.name}
-              color={cat.color}
-              active={task.category === cat.key}
-              pending={pendingCategory === cat.key}
-              disabled={!!pendingCategory}
-              onClick={() => {
-                if (task.category === cat.key || pendingCategory) return
-                updateCategory({ category: cat.key })
-              }}
-            />
-          ))}
-        </div>
-
         <div className="detail-footer">
-          <span className="detail-footer-karma" onClick={() => {
-            if (task.points > 0) {
-              const msg = karmaMotivation[Math.floor(Math.random() * karmaMotivation.length)].replace(/\{n\}/g, task.points)
-              setSuccessMsg(msg)
-            }
-          }}>
-            {task.points > 0 && Array.from({ length: task.points }, (_, i) => <Star key={i} size={12} />)}
+          <span className="detail-footer-karma">
+            <ThumbsUp size={14} /> {item.totalVotes} Karma
           </span>
           <span className="detail-footer-tag">
-            {task.recurring && <><Clock size={12} /> Wiederkehrend</>}
+            {item.voterCount} Unterstützer
           </span>
           <span className="detail-footer-date">
-            {new Date(task.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}
+            {new Date(item.createdAt).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })}
           </span>
         </div>
+
+        {item.myVotes > 0 && (
+          <p className="detail-my-votes">
+            Du hast {item.myVotes} Karma-Punkt{item.myVotes > 1 ? 'e' : ''} eingesetzt
+          </p>
+        )}
       </div>
+
+      {showVoting && (
+        <div className="detail-confirm-overlay" onClick={() => setShowVoting(false)}>
+          <div className="detail-confirm" onClick={e => e.stopPropagation()}>
+            <h3 className="detail-confirm-title">Karma einsetzen</h3>
+            <p className="detail-confirm-text">Wie viele Karma-Punkte möchtest du für dieses Projekt einsetzen?</p>
+            <div className="voting-card-stepper" style={{ marginTop: '1rem' }}>
+              <button
+                className="voting-card-stepper-btn"
+                onClick={() => setVotePoints(p => Math.max(1, p - 1))}
+                disabled={votePoints <= 1}
+              >
+                <Minus size={16} />
+              </button>
+              <input
+                className="voting-card-stepper-value"
+                type="number"
+                min={1}
+                max={availablePoints}
+                value={votePoints}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value)
+                  if (isNaN(val) || val < 1) setVotePoints(1)
+                  else if (val > availablePoints) setVotePoints(availablePoints)
+                  else setVotePoints(val)
+                }}
+              />
+              <button
+                className="voting-card-stepper-btn"
+                onClick={() => setVotePoints(p => Math.min(availablePoints, p + 1))}
+                disabled={votePoints >= availablePoints}
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+            <p className="detail-confirm-text" style={{ marginTop: '0.5rem' }}>
+              Verfügbar: {availablePoints}
+            </p>
+            {voteMutation.isError && (
+              <p className="detail-error-msg">{voteMutation.error.message}</p>
+            )}
+            <div className="detail-confirm-actions">
+              <button className="detail-confirm-cancel" onClick={() => setShowVoting(false)}>Abbrechen</button>
+              <button
+                className="detail-confirm-yes"
+                onClick={() => voteMutation.mutate({ points: votePoints })}
+                disabled={voteMutation.isPending}
+              >
+                {voteMutation.isPending ? 'Sende...' : `Ich übergebe ${votePoints} Karma Punkt${votePoints > 1 ? 'e' : ''}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {comments.length > 0 && (
         <div className="detail-chat">
@@ -308,18 +317,13 @@ export default function TaskDetailPage() {
         </div>
       )}
 
-      {completeMutation.isError && (
-        <p className="detail-error-msg">{completeMutation.error.message}</p>
-      )}
-
-      {!task.recurring && commentPhoto && (
+      {commentPhoto && (
         <div className="detail-chat-preview">
           <img src={commentPhoto} alt="Vorschau" />
           <button onClick={() => setCommentPhoto(null)}>✕</button>
         </div>
       )}
 
-      {!task.recurring && (
       <div className="detail-chat-input">
         <button className="detail-chat-photo" onClick={() => fileRef.current?.click()}>
           <Camera size={20} />
@@ -349,31 +353,13 @@ export default function TaskDetailPage() {
           <Send size={18} />
         </button>
       </div>
-      )}
 
-      {confirmOpen && (
-        <div className="detail-confirm-overlay" onClick={() => setConfirmOpen(false)}>
-          <div className="detail-confirm" onClick={e => e.stopPropagation()}>
-            <h3 className="detail-confirm-title">Danke für deine Hilfe! 🙏</h3>
-            <p className="detail-confirm-text">Damit niemand enttäuscht wird - hast du den Wunsch so wie beschrieben vollständig erfüllt?</p>
-            <div className="detail-confirm-actions">
-              <button className="detail-confirm-cancel" onClick={() => setConfirmOpen(false)}>Abbrechen</button>
-              <button className="detail-confirm-yes" onClick={() => {
-                setConfirmOpen(false)
-                completeMutation.mutate()
-              }}>Ja, erledigt!</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {!completeMutation.isSuccess && (
+      {availablePoints > 0 && (
         <button
           className="detail-fab"
-          onClick={() => setConfirmOpen(true)}
-          disabled={completeMutation.isPending}
+          onClick={() => { setShowVoting(true); setVotePoints(1) }}
         >
-          <Check size={28} />
+          <ThumbsUp size={28} />
         </button>
       )}
     </div>

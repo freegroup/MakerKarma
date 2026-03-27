@@ -9,6 +9,8 @@ import TaskDetailPage from './pages/TaskDetailPage'
 import ProfilePage from './pages/ProfilePage'
 import KarmaBoardPage from './pages/KarmaBoardPage'
 import CreateTaskPage from './pages/CreateTaskPage'
+import VotingPage from './pages/VotingPage'
+import VotingDetailPage from './pages/VotingDetailPage'
 
 function ProtectedRoute({ children }) {
   const { user, token } = useAuthStore()
@@ -43,6 +45,7 @@ export default function App() {
         }
       >
         <Route index element={<TasksPage />} />
+        <Route path="voting" element={<VotingPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="board" element={<KarmaBoardPage />} />
       </Route>
@@ -56,6 +59,7 @@ export default function App() {
       >
         <Route path="tasks/new" element={<CreateTaskPage />} />
         <Route path="tasks/:id" element={<TaskDetailPage />} />
+        <Route path="voting/:id" element={<VotingDetailPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

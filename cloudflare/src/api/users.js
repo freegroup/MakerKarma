@@ -91,36 +91,59 @@ export async function getMe(c) {
   const octokit = getOctokit(c.env)
   const { owner, repo } = getRepo(c.env)
 
-  // Calculate points from completion comments
-  const comments = await octokit.paginate(octokit.issues.listCommentsForRepo, {
+  // Calculate points from completion comments (earned) and vote comments (spent)
+  const allComments = await octokit.paginate(octokit.issues.listCommentsForRepo, {
     owner, repo, per_page: 100,
   })
+  // paginate returns flat array, but flatten just in case
+  const comments = allComments.flat()
 
-  let totalPoints = 0
+  let earnedPoints = 0
+  let spentPoints = 0
   let totalTasks = 0
   const monthPoints = {}
+  const userId = jwtUser.id
 
   for (const comment of comments) {
-    const match = (comment.body || '').match(/<!-- completion:(.*?) -->/)
-    if (!match) continue
-    try {
-      const data = JSON.parse(match[1])
-      if (data.userId !== jwtUser.id) continue
-      const pts = data.points || 0
-      totalPoints += pts
-      totalTasks += 1
-      const month = data.completedAt?.slice(0, 7)
-      if (month) {
-        monthPoints[month] = (monthPoints[month] || 0) + pts
-      }
-    } catch {}
+    const body = comment.body || ''
+
+    const completionMatch = body.match(/<!-- completion:(.*?) -->/)
+    if (completionMatch) {
+      try {
+        const data = JSON.parse(completionMatch[1])
+        if (data.userId !== userId) continue
+        const pts = data.points || 0
+        earnedPoints += pts
+        totalTasks += 1
+        const month = data.completedAt?.slice(0, 7)
+        if (month) {
+          monthPoints[month] = (monthPoints[month] || 0) + pts
+        }
+      } catch {}
+      continue
+    }
+
+    const voteMatch = body.match(/<!-- vote:(.*?) -->/)
+    if (voteMatch) {
+      try {
+        const data = JSON.parse(voteMatch[1])
+        if (data.userId !== userId) continue
+        spentPoints += data.points || 0
+      } catch {}
+    }
   }
+
+  const availablePoints = earnedPoints - spentPoints
 
   return c.json({
     ...jwtUser,
-    points: totalPoints,
+    earnedPoints,
+    spentPoints,
+    availablePoints,
+    points: earnedPoints,
     tasks: totalTasks,
     monthPoints,
+    _debug: { userId, commentsTotal: comments.length, earnedPoints, spentPoints },
   })
 }
 

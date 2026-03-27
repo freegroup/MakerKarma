@@ -1,0 +1,93 @@
+{
+  "tiers": [
+    {
+      "min": 0,
+      "max": 0,
+      "messages": [
+        "Schön, dass du da bist! Dein MakerSpace freut sich über dich.",
+        "Willkommen! Schau dich um — vielleicht ist etwas dabei, das dir Spaß macht.",
+        "Jeder ist willkommen, ganz ohne Druck. Schön, dass du Teil der Community bist!",
+        "Kein Stress — manchmal reicht es schon, einfach da zu sein.",
+        "Du bist ein wichtiger Teil des MakerSpace, egal was das Karma sagt.",
+        "Gutes Karma kommt von allein. Wir freuen uns einfach über dich!",
+        "Noch kein Karma? Kein Ding! Komm vorbei und lass dich inspirieren.",
+        "Der MakerSpace lebt von seinen Mitgliedern — also auch von dir!",
+        "Entspann dich und schau mal, welche Wünsche offen sind.",
+        "Dein Karma-Konto wartet geduldig. Kein Eilen, kein Müssen.",
+        "Hier zählt Gemeinschaft, nicht Leistung. Willkommen!",
+        "Manchmal passt es einfach nicht. Nächsten Monat wird super!",
+        "Du machst den Space besser, allein durch deine Mitgliedschaft.",
+        "Karma kommt und geht — du bleibst. Und das ist was zählt.",
+        "Schau mal in die Wunschliste. Vielleicht ist etwas Kleines dabei?"
+      ]
+    },
+    {
+      "min": 1,
+      "max": 10,
+      "messages": [
+        "Ein guter Anfang! Jede Hilfe macht einen Unterschied.",
+        "Du hast diesen Monat schon geholfen — das ist großartig!",
+        "Klein, aber fein. Danke für deinen Beitrag!",
+        "Erste Schritte sind die wichtigsten. Weiter so!",
+        "Schön, dass du mit anpackst. Der Space dankt dir!",
+        "Jeder Punkt zählt — und deiner ganz besonders.",
+        "Du hast einen Wunsch erfüllt! Das merkt die Community.",
+        "Gutes Karma fängt genau so an. Danke dir!",
+        "Mit jeder Hilfe wird der MakerSpace ein bisschen besser.",
+        "Dein Einsatz wird gesehen und geschätzt!",
+        "Du machst das super — einfach dranbleiben!",
+        "Kleine Gesten, große Wirkung. Danke!"
+      ]
+    },
+    {
+      "min": 11,
+      "max": 25,
+      "messages": [
+        "Richtig stark! Du bist eine echte Stütze für den MakerSpace.",
+        "Wow, du hast diesen Monat einiges bewegt!",
+        "Die Community profitiert von deinem Engagement. Danke!",
+        "Du bist auf einem tollen Weg — der Space merkt das!",
+        "Dein Karma wächst und mit ihm der MakerSpace.",
+        "So viel Einsatz! Du bist ein Vorbild für andere.",
+        "Der MakerSpace hat Glück, dich als Mitglied zu haben.",
+        "Beeindruckend! Dein Engagement macht den Unterschied.",
+        "Du packst richtig mit an — das verdient Respekt!",
+        "Weiter so! Du gehörst zu den Aktivsten diesen Monat.",
+        "Dein Beitrag fällt auf — im allerbesten Sinne!",
+        "Hut ab! Du machst die Community stärker."
+      ]
+    },
+    {
+      "min": 26,
+      "max": 50,
+      "messages": [
+        "Unglaublich! Du bist ein Karma-Held!",
+        "Was für ein Monat! Der MakerSpace verneigt sich.",
+        "Du setzt Maßstäbe. Einfach beeindruckend!",
+        "Dein Engagement ist außergewöhnlich — Riesendank!",
+        "So viel gutes Karma! Du inspirierst die ganze Community.",
+        "Der MakerSpace wäre ohne dich nicht derselbe.",
+        "Wahnsinn, was du diesen Monat bewegt hast!",
+        "Du bist der Grund, warum der MakerSpace so toll ist.",
+        "Helden tragen keine Capes — sie haben Karma!",
+        "Die Community sagt Danke. Laut und deutlich!"
+      ]
+    },
+    {
+      "min": 51,
+      "max": 9999,
+      "messages": [
+        "Legende! Dein Karma-Level ist über 9000!",
+        "Du bist nicht zu stoppen! Absolut legendär!",
+        "Gibt es einen Orden für MakerSpace-Helden? Du hättest ihn verdient!",
+        "Rekordverdächtig! Die Community feiert dich!",
+        "Du bist das Karma. Danke für alles, was du tust!",
+        "So viel Einsatz sieht man selten. Du bist einzigartig!",
+        "Standing Ovation! Was für ein unglaublicher Monat!",
+        "Der MakerSpace-MVP dieses Monats bist eindeutig du!",
+        "Karma-Meister! Dein Einsatz ist einfach beispiellos.",
+        "Du machst das Unmögliche möglich. Respekt!"
+      ]
+    }
+  ]
+}

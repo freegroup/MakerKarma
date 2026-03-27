@@ -6,6 +6,7 @@ import { authMiddleware } from './middleware/auth.js'
 import { signJWT } from './middleware/jwt.js'
 import { findOrCreateUser, getMe, listUsers, toggleAdmin, readUsers, writeUsers } from './api/users.js'
 import { listTasks, getTask, createTask, completeTask, getTaskHistory, getTaskComments, addTaskComment } from './api/tasks.js'
+import { listVotingItems, getVotingItem, castVote } from './api/voting.js'
 
 const app = new Hono()
 
@@ -107,6 +108,11 @@ api.post('/tasks/:id/complete', completeTask)
 api.get('/tasks/:id/comments', getTaskComments)
 api.post('/tasks/:id/comment', addTaskComment)
 api.get('/tasks/:id/history', getTaskHistory)
+
+// Voting
+api.get('/voting', listVotingItems)
+api.get('/voting/:id', getVotingItem)
+api.post('/voting/:id/vote', castVote)
 
 // Update task category
 api.put('/tasks/:id/category', async (c) => {

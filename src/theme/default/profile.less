@@ -4,10 +4,38 @@
   &-card { background: white; border-radius: @radius-2xl; box-shadow: @shadow-sm; padding: @spacing-6; }
   &-avatar { border-radius: @radius-full; }
   &-name { font-size: @font-size-xl; font-weight: 700; color: @gray-900; }
-  &-email { font-size: @font-size-sm; color: @gray-500; }
-  &-points { color: @color-warning; }
-  &-points-value { font-size: @font-size-3xl; font-weight: 800; }
-  &-points-label { font-size: @font-size-sm; color: @gray-500; }
+  &-email { font-size: @font-size-sm; color: @gray-500; margin-bottom: @spacing-4; }
+
+  &-stats { margin-top: @spacing-2; }
+
+  &-stat {
+    &-value { font-size: @font-size-2xl; font-weight: 800; }
+    &-label { font-size: @font-size-xs; color: @gray-500; }
+
+    &--total { color: @color-warning; }
+
+    &--month { color: @color-success; }
+
+    &--available { color: @brand-accent; }
+  }
+
+  &-message {
+    margin-top: @spacing-4;
+    padding: @spacing-3;
+    border-radius: @radius-xl;
+    font-size: @font-size-sm;
+    font-weight: 500;
+
+    &--active {
+      background: fade(@color-success, 8%);
+      color: @color-success;
+    }
+
+    &--welcome {
+      background: fade(@brand-primary, 8%);
+      color: @brand-primary;
+    }
+  }
 
   &-logout {
     background: white; border: 1px solid @gray-200; border-radius: @radius-xl;

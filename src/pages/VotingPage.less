@@ -1,0 +1,85 @@
+@import '../theme/default/variables.less';
+
+.voting {
+  &-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-balance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-empty {
+    text-align: center;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: @spacing-4;
+  }
+
+  &-card {
+    display: flex;
+    flex-direction: column;
+    gap: @spacing-2;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      cursor: pointer;
+    }
+
+    &-stats {
+      display: flex;
+      align-items: center;
+      gap: @spacing-1;
+      flex-shrink: 0;
+    }
+
+    &-meta {
+      display: flex;
+      align-items: center;
+      gap: @spacing-3;
+    }
+
+    &-input {
+      display: flex;
+      flex-direction: column;
+      gap: @spacing-3;
+    }
+
+    &-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: @spacing-4;
+    }
+
+    &-actions {
+      display: flex;
+      gap: @spacing-2;
+    }
+
+    &-cancel,
+    &-confirm {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    &-vote {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: @spacing-2;
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+}
