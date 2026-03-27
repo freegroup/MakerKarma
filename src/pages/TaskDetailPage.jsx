@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { apiFetch } from '../store/authStore'
+import { useAuthStore, apiFetch } from '../store/authStore'
 import Markdown from 'react-markdown'
 import AppHeader from '../components/AppHeader'
 import PageLayout from '../components/PageLayout'
@@ -76,6 +76,8 @@ export default function TaskDetailPage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const fileRef = useRef()
+  const { user } = useAuthStore()
+  const isAdmin = user?.isAdmin
   const [commentText, setCommentText] = useState('')
   const [commentPhoto, setCommentPhoto] = useState(null)
 
@@ -266,9 +268,9 @@ export default function TaskDetailPage() {
               color={cat.color}
               active={task.category === cat.key}
               pending={pendingCategory === cat.key}
-              disabled={!!pendingCategory}
+              disabled={!isAdmin || !!pendingCategory}
               onClick={() => {
-                if (task.category === cat.key || pendingCategory) return
+                if (!isAdmin || task.category === cat.key || pendingCategory) return
                 updateCategory({ category: cat.key })
               }}
             />

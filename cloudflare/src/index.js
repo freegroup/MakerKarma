@@ -114,8 +114,13 @@ api.get('/voting', listVotingItems)
 api.get('/voting/:id', getVotingItem)
 api.post('/voting/:id/vote', castVote)
 
-// Update task category
+// Update task category (admin only)
 api.put('/tasks/:id/category', async (c) => {
+  const user = c.get('user')
+  if (!user.isAdmin) {
+    return c.json({ error: 'Nur Admins können Kategorien ändern' }, 403)
+  }
+
   const id = parseInt(c.req.param('id'))
   const { category } = await c.req.json()
   const octokit = new (await import('@octokit/rest')).Octokit({ auth: c.env.GITHUB_BOT_TOKEN })
@@ -132,7 +137,6 @@ api.put('/tasks/:id/category', async (c) => {
   await octokit.issues.setLabels({ owner, repo, issue_number: id, labels: newLabels })
 
   // Document category change as comment
-  const user = c.get('user')
   const oldCat = currentLabels.find(l => l.startsWith('category-'))?.replace('category-', '') || '—'
   await octokit.issues.createComment({
     owner, repo, issue_number: id,
