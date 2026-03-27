@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useAuthStore, apiFetch } from '../store/authStore'
 import { Star, LogOut, ThumbsUp, Sparkles, TrendingUp } from 'lucide-react'
@@ -38,8 +38,8 @@ export default function ProfilePage() {
   const available = profile?.availablePoints ?? 0
   const thisMonth = getCurrentMonthPoints(profile?.monthPoints)
 
-  // Stable random message per render (won't flicker on re-renders from same data)
-  const [message] = useState(() => getKarmaMessage(thisMonth))
+  // Pick random message when thisMonth changes (i.e. after profile loads)
+  const message = useMemo(() => getKarmaMessage(thisMonth), [thisMonth])
 
   return (
     <div className="profile">
